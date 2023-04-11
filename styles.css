@@ -15,8 +15,34 @@ section {
     justify-content: center;
 }
 
+button {
+    font-family: 'Poppins', sans-serif;
+    background-color: #000000;
+    color: #FFFFFF;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: x-large;
+    font-weight: 200;
+    border: none;
+}
+
+.button-boxL {
+    height: auto;
+    width: 50px;
+    background-color: #000000;
+    border-bottom-left-radius: 100%;
+}
+
+.button-boxR {
+    height: auto;
+    width: 50px;
+    background-color: #000000;
+    border-top-right-radius: 100%;
+}
+
 .box-title {
     padding: 10px;
+    margin-bottom: 20px;
 }
 
 .color-box {
@@ -28,7 +54,7 @@ section {
 .hex-code {
     font-family: 'Poppins', sans-serif;
     text-align: center;
-    font-weight: 50;
+    font-weight: 400;
     padding-top: 5px;
     font-size: 1.2em;
 }
