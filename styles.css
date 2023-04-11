@@ -1,0 +1,22 @@
+html {
+    font-family: 'Poppins', sans-serif;
+    background-color: #e7f1f1;
+}
+
+header {
+    font-size: 7rem;
+    text-align: center;
+
+}
+
+section {
+    display: flex;
+    justify-content: center;
+}
+
+.color-box {
+    height: 100px;
+    width: 100px;
+    border: solid
+    
+}
