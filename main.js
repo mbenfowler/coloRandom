@@ -7,9 +7,7 @@ var newPaletteButton = document.querySelector('button');
 var mainColorBoxes = document.querySelectorAll('.color-container');
 var lockButton = document.querySelector('.main-display');
 
-window.addEventListener('load', function () {
-    console.log("getNewHexes()");
-});
+window.addEventListener('load', getNewHexes);
 
 lockButton.addEventListener('click', function(event) {
     if (event.target.className === 'lock-box') {
@@ -25,11 +23,12 @@ newPaletteButtonSection.addEventListener('click', function(event) {
 
 function getNewHexes() {
     currentHexes = [];
-    mainColorBoxes.forEach((colorBox) => {
-        var newColor = getRandomHex().toUpperCase();
-        colorBox.firstElementChild.style.backgroundColor = `#${newColor}`;
-        colorBox.lastElementChild.innerText = `#${newColor}`;
-    });
+    var newColor;
+    for(i = 0; i < mainColorBoxes.length; i++) {
+        newColor = getRandomHex().toUpperCase();
+        mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${newColor}`;
+        mainColorBoxes[i].lastElementChild.innerText = `#${newColor}`;
+    }
 }
 
 function lockToggle(event) {
