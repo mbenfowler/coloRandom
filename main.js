@@ -5,9 +5,16 @@ var newPaletteButtonSection = document.querySelector('.button-area');
 var newPaletteButton = document.querySelector('button');
 
 var mainColorBoxes = document.querySelectorAll('.color-container');
+var lockButton = document.querySelector('.main-display');
 
 window.addEventListener('load', function () {
     console.log("getNewHexes()");
+});
+
+lockButton.addEventListener('click', function(event) {
+    if (event.target.className === 'lock-box') {
+        lockToggle(event.target);
+    }
 });
 
 newPaletteButtonSection.addEventListener('click', function(event) {
@@ -23,6 +30,14 @@ function getNewHexes() {
         colorBox.firstElementChild.style.backgroundColor = `#${newColor}`;
         colorBox.lastElementChild.innerText = `#${newColor}`;
     });
+}
+
+function lockToggle(event) {
+    if (event.getAttribute('src') === './assets/unlocked.png') {
+        event.src = './assets/locked.png'
+    } else {
+        event.src = './assets/unlocked.png'
+    }
 }
 
 function getRandomHex() {
