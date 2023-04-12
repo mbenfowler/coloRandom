@@ -1,5 +1,13 @@
 html {
+    height: 100%;
     background-color: #e7f1f1;
+}
+
+body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 header {
@@ -7,7 +15,6 @@ header {
     font-weight: bolder;
     font-size: 4rem;
     text-align: center;
-    padding: 50px;
 }
 
 section {
@@ -15,7 +22,32 @@ section {
     justify-content: center;
 }
 
-.box-title {
+button {
+    font-family: 'Poppins', sans-serif;
+    background-color: #000000;
+    color: #FFFFFF;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: x-large;
+    font-weight: 200;
+    border: none;
+}
+
+.button-box-l {
+    height: auto;
+    width: 50px;
+    background-color: #000000;
+    border-bottom-left-radius: 100%;
+}
+
+.button-box-r {
+    height: auto;
+    width: 50px;
+    background-color: #000000;
+    border-top-right-radius: 100%;
+}
+
+.color-container {
     padding: 10px;
 }
 
@@ -28,7 +60,7 @@ section {
 .hex-code {
     font-family: 'Poppins', sans-serif;
     text-align: center;
-    font-weight: 50;
+    font-weight: 400;
     padding-top: 5px;
     font-size: 1.2em;
 }
