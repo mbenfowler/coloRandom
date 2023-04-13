@@ -52,7 +52,6 @@ function toggleLockClass(element) {
         element.classList.add('locked');
         element.classList.remove('unlocked');
     }
-    console.log(element.classList)
 }
 
 function getRandomHex() {
