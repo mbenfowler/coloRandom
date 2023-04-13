@@ -6,6 +6,9 @@ var newPaletteButton = document.querySelector('button');
 
 var mainColorBoxes = document.querySelectorAll('.color-container');
 var lockButton = document.querySelector('.main-display');
+var savedPalettes = document.querySelector('.mini-palettes')
+var saveButton = document.querySelector('#save-palette')
+var p = document.querySelector('p')
 
 window.addEventListener('load', getNewHexes);
 
@@ -28,6 +31,7 @@ function getNewHexes() {
         newColor = getRandomHex().toUpperCase();
         mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${newColor}`;
         mainColorBoxes[i].lastElementChild.innerText = `#${newColor}`;
+        currentHexes.push(newColor);
     }
 }
 
@@ -41,4 +45,37 @@ function lockToggle(event) {
 
 function getRandomHex() {
     return (Math.floor(Math.random() * 16777216).toString(16).padStart(6, 0));
+}
+
+saveButton.addEventListener('click', function(event) {
+    if (event.target.id === 'save-palette') {
+        savePalette();
+    }
+})
+
+function savePalette() {
+    if (!hexData.includes(currentHexes)) {
+        hexData.push(currentHexes)
+    }
+    displaySavedPalettes()
+}
+
+function displaySavedPalettes() {
+    savedPalettes.innerHTML = '';
+    if (!hexData.length) {
+        p.classList.remove('hidden');
+    } else {
+        p.classList.add('hidden');
+        for (i = 0; i < hexData.length; i++) {
+        savedPalettes.innerHTML += `
+        <section class="mini-container">
+            <div class="mini-box", style="background-color: #${hexData[i][0]}"></div>
+            <div class="mini-box", style="background-color: #${hexData[i][1]}"></div>
+            <div class="mini-box", style="background-color: #${hexData[i][2]}"></div>
+            <div class="mini-box", style="background-color: #${hexData[i][3]}"></div>
+            <div class="mini-box", style="background-color: #${hexData[i][4]}"></div>
+        </section>
+        `
+        };
+    }
 }
