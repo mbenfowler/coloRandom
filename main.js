@@ -43,21 +43,10 @@ function getNewHexes() {
 function lockToggle(event) {
     if (event.getAttribute('src') === './assets/unlocked.png') {
         event.src = './assets/locked.png';
-        toggleLockClass(event);
     } else {
-        event.src = './assets/unlocked.png';
-        toggleLockClass(event);
+        event.src = './assets/unlocked.png'; 
     }
-}
-
-function toggleLockClass(element) {
-    if(element.classList.contains('locked')) {
-        element.classList.remove('locked');
-        element.classList.add('unlocked');
-    } else {
-        element.classList.add('locked');
-        element.classList.remove('unlocked');
-    }
+    event.classList.toggle('unlocked')
 }
 
 function getRandomHex() {
