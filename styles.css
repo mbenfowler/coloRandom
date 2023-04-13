@@ -1,29 +1,64 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
 html {
     height: 100%;
     background-color: #e7f1f1;
 }
-
 body {
+    height: 100%;
+    display: flex;
+}
+
+main {
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    width: 75%;
+    border-right: 5px solid #000000;
+    min-width: 950px;
+}
+
+h1 {
+    margin: 0;
+}
+
+h2 {
+    font-size: 2.3rem;
+    margin: 0 0 30px 0;
+}
+
+p {
+    font-size: 1.5rem;
 }
 
 header {
-    font-family: 'Poppins', sans-serif;
     font-weight: bolder;
-    font-size: 4rem;
+    font-size: 3rem;
     text-align: center;
 }
 
-section {
+.main-display,
+.button-area {
     display: flex;
     justify-content: center;
 }
 
+.save-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    width: 25%;
+    margin-top: 35px;
+    min-width: 350px;
+}
+
 button {
-    font-family: 'Poppins', sans-serif;
+    
     background-color: #000000;
     color: #FFFFFF;
     padding-top: 10px;
@@ -31,20 +66,23 @@ button {
     font-size: x-large;
     font-weight: 200;
     border: none;
+    white-space: nowrap;
 }
 
 .button-box-l {
     height: auto;
-    width: 50px;
+    min-width: 50px;
     background-color: #000000;
     border-bottom-left-radius: 100%;
+    margin-left: 100px;
 }
 
 .button-box-r {
     height: auto;
-    width: 50px;
+    min-width: 50px;
     background-color: #000000;
     border-top-right-radius: 100%;
+    margin-right: 100px;
 }
 
 .color-container {
@@ -55,7 +93,19 @@ button {
     position: relative;
     height: 150px;
     width: 150px;
-    border: solid;
+    border: 5px solid;
+}
+
+.mini-container {
+    display: flex;
+    margin-bottom: 25px;
+}
+
+.mini-box {
+    height: 40px;
+    width: 40px;
+    border: 4px solid;
+    margin: 0 4px;
 }
 
 .lock-box {
@@ -73,7 +123,6 @@ button {
 }
 
 .hex-code {
-    font-family: 'Poppins', sans-serif;
     text-align: center;
     font-weight: 400;
     padding-top: 5px;
@@ -98,4 +147,8 @@ button {
 
 #b5 {
     background-color: #A4C4CA;
+}
+
+.hidden {
+    display: none;
 }

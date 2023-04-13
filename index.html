@@ -10,48 +10,62 @@
         </title>
     </head>
     <body>
-        <header>
-            <strong>COLORANDOM</strong>
-        </header>
-        <section class="main-display">
-            <div class="color-container">
-                <div class="color-box" id="b1">
-                    <img src="./assets/unlocked.png" class="lock-box unlocked">
+        <main>
+            <header>
+                <h1>COLORANDOM</h1>
+            </header>
+            <section class="main-display">
+                <div class="color-container">
+                    <div class="color-box" id="b1">
+                        <img src="./assets/unlocked.png" class="lock-box unlocked">
+                    </div>
+                    <div class="hex-code">#EA9999</div>
                 </div>
-                <div class="hex-code">#EA9999</div>
-            </div>
-            <div class="color-container">
-                <div class="color-box" id="b2">
-                    <img src="./assets/unlocked.png" class="lock-box unlocked">
+                <div class="color-container">
+                    <div class="color-box" id="b2">
+                        <img src="./assets/unlocked.png" class="lock-box unlocked">
+                    </div>
+                    <div class="hex-code">#FACB9C</div>
                 </div>
-                <div class="hex-code">#FACB9C</div>
-            </div>
-            <div class="color-container">
-                <div class="color-box" id="b3">
-                    <img src="./assets/unlocked.png" class="lock-box unlocked">
+                <div class="color-container">
+                    <div class="color-box" id="b3">
+                        <img src="./assets/unlocked.png" class="lock-box unlocked">
+                    </div>
+                    <div class="hex-code">#FFE59A</div>
                 </div>
-                <div class="hex-code">#FFE59A</div>
-            </div>
-            <div class="color-container">
-                <div class="color-box" id="b4">
-                    <img src="./assets/unlocked.png" class="lock-box unlocked">
+                <div class="color-container">
+                    <div class="color-box" id="b4">
+                        <img src="./assets/unlocked.png" class="lock-box unlocked">
+                    </div>
+                    <div class="hex-code">#B6D7A8</div>
                 </div>
-                <div class="hex-code">#B6D7A8</div>
-            </div>
-            <div class="color-container">
-                <div class="color-box" id="b5">
-                    <img src="./assets/unlocked.png" class="lock-box unlocked">
+                <div class="color-container">
+                    <div class="color-box" id="b5">
+                        <img src="./assets/unlocked.png" class="lock-box unlocked">
+                    </div>
+                    <div class="hex-code">#A4C4CA</div>
                 </div>
-                <div class="hex-code">#A4C4CA</div>
-            </div>
-        </section>
-        <section class="button-area">
-            <div class="button-box-l"></div>
-            <button id="new-palette">
-                New Palette
-            </button>
-            <div class="button-box-r"></div>
-        </section>
+            </section>
+            <section class="button-area">
+                <div class="button-box-l"></div>
+                <button id="new-palette">
+                    New Palette
+                </button>
+                <div class="button-box-r"></div>
+                <div class="button-box-l"></div>
+                <button id="save-palette">
+                    Save Palette
+                </button>
+                <div class="button-box-r"></div>
+            </section>
+        </main>
+            <section class="save-container">
+                <h2>Saved Palettes</h2>
+                <p>No saved palettes yet!</p>
+                    <section class="mini-palettes">
+                        <!-- Saved palettes gets populated here -->
+                    </section>
+                </section>
         <script src="./main.js"></script>
     </body>
 </html>
