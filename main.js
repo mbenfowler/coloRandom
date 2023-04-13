@@ -1,13 +1,12 @@
-var hexData = [];
-var currentHexes;
+var savedPalettes = [];
+var currentPalette = [];
 
-var newPaletteButtonSection = document.querySelector('.button-area');
+var buttonSection = document.querySelector('.button-area');
 var newPaletteButton = document.querySelector('button');
 
 var mainColorBoxes = document.querySelectorAll('.color-container');
 var lockButton = document.querySelector('.main-display');
-var savedPalettes = document.querySelector('.mini-palettes')
-var saveButton = document.querySelector('#save-palette')
+var savedPalettesSection = document.querySelector('.mini-palettes')
 var p = document.querySelector('p')
 
 window.addEventListener('load', getNewHexes);
@@ -18,14 +17,15 @@ lockButton.addEventListener('click', function(event) {
     }
 });
 
-newPaletteButtonSection.addEventListener('click', function(event) {
-    if(event.target.classList.contains('button-box-l') || event.target.id === 'new-palette' || event.target.classList.contains('button-box-r')) {
+buttonSection.addEventListener('click', function(event) {
+    if(event.target.classList.contains('new-palette')) {
         getNewHexes();
     }
 });
 
 function getNewHexes() {
-    currentHexes = [];
+    var oldHexes = currentPalette
+    currentPalette = [];
     var newColor;
     for(i = 0; i < mainColorBoxes.length; i++) {
         var thisColorBoxLock = mainColorBoxes[i].firstElementChild.firstElementChild
@@ -33,7 +33,9 @@ function getNewHexes() {
             newColor = getRandomHex().toUpperCase();
             mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${newColor}`;
             mainColorBoxes[i].lastElementChild.innerText = `#${newColor}`;
-            currentHexes.push(newColor);
+            currentPalette.push(newColor);
+        } else { 
+            currentPalette.push(oldHexes[i])
         }
     }
 }
@@ -62,34 +64,35 @@ function getRandomHex() {
     return (Math.floor(Math.random() * 16777216).toString(16).padStart(6, 0));
 }
 
-saveButton.addEventListener('click', function(event) {
-    if (event.target.id === 'save-palette') {
+buttonSection.addEventListener('click', function(event) {
+    if (event.target.classList.contains('save-palette')) {
         savePalette();
     }
 })
 
 function savePalette() {
-    if (!hexData.includes(currentHexes)) {
-        hexData.push(currentHexes)
+    if (!savedPalettes.includes(currentPalette)) {
+        savedPalettes.push(currentPalette);
     }
-    displaySavedPalettes()
+    displaysavedPalettesSection();
+    getNewHexes();
 }
 
-function displaySavedPalettes() {
-    savedPalettes.innerHTML = '';
-    if (!hexData.length) {
+function displaysavedPalettesSection() {
+    savedPalettesSection.innerHTML = '';
+    if (!savedPalettes.length) {
         p.classList.remove('hidden');
     } else {
         p.classList.add('hidden');
-        for (i = 0; i < hexData.length; i++) {
-        savedPalettes.innerHTML += `
-        <section class="mini-container">
-            <div class="mini-box", style="background-color: #${hexData[i][0]}"></div>
-            <div class="mini-box", style="background-color: #${hexData[i][1]}"></div>
-            <div class="mini-box", style="background-color: #${hexData[i][2]}"></div>
-            <div class="mini-box", style="background-color: #${hexData[i][3]}"></div>
-            <div class="mini-box", style="background-color: #${hexData[i][4]}"></div>
-        </section>
+        for (i = 0; i < savedPalettes.length; i++) {
+        savedPalettesSection.innerHTML += `
+        <div class="mini-container">
+            <div class="mini-box", style="background-color: #${savedPalettes[i][0]}"></div>
+            <div class="mini-box", style="background-color: #${savedPalettes[i][1]}"></div>
+            <div class="mini-box", style="background-color: #${savedPalettes[i][2]}"></div>
+            <div class="mini-box", style="background-color: #${savedPalettes[i][3]}"></div>
+            <div class="mini-box", style="background-color: #${savedPalettes[i][4]}"></div>
+        </div>
         `
         };
     }
