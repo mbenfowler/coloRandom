@@ -40,7 +40,8 @@ header {
     text-align: center;
 }
 
-section {
+.main-display,
+.button-area {
     display: flex;
     justify-content: center;
 }
