@@ -13,13 +13,19 @@ window.addEventListener('load', getNewHexes);
 
 lockButton.addEventListener('click', function(event) {
     if (event.target.classList.contains('lock-box')) {
-        lockToggle(event.target);
+        toggleLock(event.target);
     }
 });
 
 buttonSection.addEventListener('click', function(event) {
     if(event.target.classList.contains('new-palette')) {
         getNewHexes();
+    }
+});
+
+buttonSection.addEventListener('click', function(event) {
+    if (event.target.classList.contains('save-palette')) {
+        savePalette();
     }
 });
 
@@ -40,7 +46,7 @@ function getNewHexes() {
     }
 }
 
-function lockToggle(event) {
+function toggleLock(event) {
     if (event.getAttribute('src') === './assets/unlocked.png') {
         event.src = './assets/locked.png';
     } else {
@@ -53,21 +59,13 @@ function getRandomHex() {
     return (Math.floor(Math.random() * 16777216).toString(16).padStart(6, 0));
 }
 
-buttonSection.addEventListener('click', function(event) {
-    if (event.target.classList.contains('save-palette')) {
-        savePalette();
-    }
-})
-
 function savePalette() {
-    if (!savedPalettes.includes(currentPalette)) {
-        savedPalettes.push(currentPalette);
-    }
-    displaysavedPalettesSection();
+    savedPalettes.push(currentPalette)
+    displaySavedPalettesSection();
     getNewHexes();
 }
 
-function displaysavedPalettesSection() {
+function displaySavedPalettesSection() {
     savedPalettesSection.innerHTML = '';
     if (!savedPalettes.length) {
         p.classList.remove('hidden');
