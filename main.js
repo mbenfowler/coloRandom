@@ -1,28 +1,37 @@
-var hexData = [];
-var currentHexes;
+var savedPalettes = [];
+var currentPalette = [];
 
-var newPaletteButtonSection = document.querySelector('.button-area');
+var buttonSection = document.querySelector('.button-area');
 var newPaletteButton = document.querySelector('button');
 
 var mainColorBoxes = document.querySelectorAll('.color-container');
 var lockButton = document.querySelector('.main-display');
+var savedPalettesSection = document.querySelector('.mini-palettes')
+var p = document.querySelector('p')
 
 window.addEventListener('load', getNewHexes);
 
 lockButton.addEventListener('click', function(event) {
     if (event.target.classList.contains('lock-box')) {
-        lockToggle(event.target);
+        toggleLock(event.target);
     }
 });
 
-newPaletteButtonSection.addEventListener('click', function(event) {
-    if(event.target.classList.contains('button-box-l') || event.target.id === 'new-palette' || event.target.classList.contains('button-box-r')) {
+buttonSection.addEventListener('click', function(event) {
+    if(event.target.classList.contains('new-palette')) {
         getNewHexes();
     }
 });
 
+buttonSection.addEventListener('click', function(event) {
+    if (event.target.classList.contains('save-palette')) {
+        savePalette();
+    }
+});
+
 function getNewHexes() {
-    currentHexes = [];
+    var oldHexes = currentPalette
+    currentPalette = [];
     var newColor;
     for(i = 0; i < mainColorBoxes.length; i++) {
         var thisColorBoxLock = mainColorBoxes[i].firstElementChild.firstElementChild
@@ -30,30 +39,48 @@ function getNewHexes() {
             newColor = getRandomHex().toUpperCase();
             mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${newColor}`;
             mainColorBoxes[i].lastElementChild.innerText = `#${newColor}`;
+            currentPalette.push(newColor);
+        } else { 
+            currentPalette.push(oldHexes[i])
         }
     }
 }
 
-function lockToggle(event) {
+function toggleLock(event) {
     if (event.getAttribute('src') === './assets/unlocked.png') {
         event.src = './assets/locked.png';
-        toggleLockClass(event);
     } else {
-        event.src = './assets/unlocked.png';
-        toggleLockClass(event);
+        event.src = './assets/unlocked.png'; 
     }
-}
-
-function toggleLockClass(element) {
-    if(element.classList.contains('locked')) {
-        element.classList.remove('locked');
-        element.classList.add('unlocked');
-    } else {
-        element.classList.add('locked');
-        element.classList.remove('unlocked');
-    }
+    event.classList.toggle('unlocked')
 }
 
 function getRandomHex() {
     return (Math.floor(Math.random() * 16777216).toString(16).padStart(6, 0));
+}
+
+function savePalette() {
+    savedPalettes.push(currentPalette)
+    displaySavedPalettesSection();
+    getNewHexes();
+}
+
+function displaySavedPalettesSection() {
+    savedPalettesSection.innerHTML = '';
+    if (!savedPalettes.length) {
+        p.classList.remove('hidden');
+    } else {
+        p.classList.add('hidden');
+        for (i = 0; i < savedPalettes.length; i++) {
+        savedPalettesSection.innerHTML += `
+        <div class="mini-container">
+            <div class="mini-box", style="background-color: #${savedPalettes[i][0]}"></div>
+            <div class="mini-box", style="background-color: #${savedPalettes[i][1]}"></div>
+            <div class="mini-box", style="background-color: #${savedPalettes[i][2]}"></div>
+            <div class="mini-box", style="background-color: #${savedPalettes[i][3]}"></div>
+            <div class="mini-box", style="background-color: #${savedPalettes[i][4]}"></div>
+        </div>
+        `
+        };
+    }
 }
