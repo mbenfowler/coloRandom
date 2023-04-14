@@ -24,8 +24,16 @@ buttonSection.addEventListener('click', function(event) {
 });
 
 buttonSection.addEventListener('click', function(event) {
-    if (event.target.classList.contains('save-palette')) {
+    if(event.target.classList.contains('save-palette')) {
         savePalette();
+    }
+});
+
+savedPalettesSection.addEventListener('click', function(event) {
+    if(event.target.classList.contains('delete-button')) {
+        var eventTargetParent = event.target.parentNode
+        var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
+        deletePalette(eventTargetParent, thisSavedPaletteIndex);
     }
 });
 
@@ -65,6 +73,11 @@ function savePalette() {
     getNewHexes();
 }
 
+function deletePalette(savedPalette, savedPalettesIndex) {
+    savedPalettes.splice(savedPalettesIndex, 1);
+    savedPalette.remove();
+}
+
 function displaySavedPalettesSection() {
     savedPalettesSection.innerHTML = '';
     if (!savedPalettes.length) {
@@ -72,15 +85,16 @@ function displaySavedPalettesSection() {
     } else {
         p.classList.add('hidden');
         for (i = 0; i < savedPalettes.length; i++) {
-        savedPalettesSection.innerHTML += `
-        <div class="mini-container">
-            <div class="mini-box", style="background-color: #${savedPalettes[i][0]}"></div>
-            <div class="mini-box", style="background-color: #${savedPalettes[i][1]}"></div>
-            <div class="mini-box", style="background-color: #${savedPalettes[i][2]}"></div>
-            <div class="mini-box", style="background-color: #${savedPalettes[i][3]}"></div>
-            <div class="mini-box", style="background-color: #${savedPalettes[i][4]}"></div>
-        </div>
-        `
+            savedPalettesSection.innerHTML += `
+                <div class="mini-container">
+                    <div class="mini-box" style="background-color: #${savedPalettes[i][0]}"></div>
+                    <div class="mini-box" style="background-color: #${savedPalettes[i][1]}"></div>
+                    <div class="mini-box" style="background-color: #${savedPalettes[i][2]}"></div>
+                    <div class="mini-box" style="background-color: #${savedPalettes[i][3]}"></div>
+                    <div class="mini-box" style="background-color: #${savedPalettes[i][4]}"></div>
+                    <img class="delete-button" src='./assets/delete.png'></img>
+                </div>
+            `
         };
     }
 }
