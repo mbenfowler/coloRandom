@@ -59,8 +59,28 @@ function getRandomHex() {
     return (Math.floor(Math.random() * 16777216).toString(16).padStart(6, 0));
 }
 
+function uniquePalettes(palettesList, singlePalette) {
+    for (i = 0; i < palettesList.length; i++) {
+        var matches = true;
+        for (j = 0; j < palettesList[i].length; j++) {
+            if (palettesList[i][j] !== singlePalette[j]) {
+                matches = false;
+                break;
+            }
+        }
+        if (matches) {
+            return false;
+        }
+    }    
+    return true;
+}
+
 function savePalette() {
-    savedPalettes.push(currentPalette)
+    if (!savedPalettes.length) {
+        savedPalettes.push(currentPalette)
+    } else if (uniquePalettes(savedPalettes, currentPalette)) {
+        savedPalettes.push(currentPalette)
+    }
     displaySavedPalettesSection();
     getNewHexes();
 }
