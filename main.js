@@ -8,6 +8,7 @@ var mainColorBoxes = document.querySelectorAll('.color-container');
 var lockButton = document.querySelector('.main-display');
 var savedPalettesSection = document.querySelector('.mini-palettes')
 var p = document.querySelector('p')
+var deleteModal = document.querySelector('.modal-window')
 
 window.addEventListener('load', getNewHexes);
 
@@ -29,13 +30,36 @@ buttonSection.addEventListener('click', function(event) {
     }
 });
 
-savedPalettesSection.addEventListener('click', function(event) {
+
+var shouldDelete = false;
+savedPalettesSection.addEventListener('click', async function(event) {
     if(event.target.classList.contains('delete-button')) {
-        var eventTargetParent = event.target.parentNode
-        var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
-        deletePalette(eventTargetParent, thisSavedPaletteIndex);
+        deleteModal.classList.toggle('hidden');
+        await getPromiseFromEvent(deleteModal, 'click')
+        if(shouldDelete) {
+            var eventTargetParent = event.target.parentNode
+            var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
+            deletePalette(eventTargetParent, thisSavedPaletteIndex);
+        }
+        deleteModal.classList.toggle('hidden');
+        shouldDelete = false;
     }
 });
+
+function getPromiseFromEvent(element, listenerName) {
+    return new Promise(function (resolve) {
+        var listener = event => {
+            if(event.target.classList.contains('modal-exit-button')) {
+                shouldDelete = false;
+            } else if(event.target.nodeName === 'BUTTON') {
+                shouldDelete = true;
+            }
+            element.removeEventListener(listenerName, listener);
+            resolve(event);
+        };
+        element.addEventListener(listenerName, listener);
+    });
+}
 
 function getNewHexes() {
     var oldHexes = currentPalette
