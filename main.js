@@ -31,11 +31,12 @@ buttonSection.addEventListener('click', function(event) {
 });
 
 savedPalettesSection.addEventListener('click', function(event) {
-    displayMainColours(getSavedPalette(event));
     if(event.target.classList.contains('delete-button')) {
         var eventTargetParent = event.target.parentNode;
         var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
         deletePalette(eventTargetParent, thisSavedPaletteIndex);
+    } else {
+        displayMainColours(getSavedPalette(event));
     }
 });
 
@@ -110,7 +111,6 @@ function getSavedPalette(event) {
             savedColors[i] = rgbToHex(rgbToNumbers(color));
         }
     }
-
     return savedColors;
 }
 
@@ -124,10 +124,11 @@ function rgbToNumbers(rgbString) {
 }
 
 function rgbToHex(rgbNumbers) {
-    return rgbNumbers[0].toString(16).padStart(2, 0) + rgbNumbers[1].toString(16).padStart(2, 0) + rgbNumbers[2].toString(16).padStart(2, 0);
+    return (rgbNumbers[0].toString(16).padStart(2, 0) + rgbNumbers[1].toString(16).padStart(2, 0) + rgbNumbers[2].toString(16).padStart(2, 0)).toUpperCase();
 }  
 
 function displayMainColours(savedPalette) {
+    currentPalette = savedPalette;
     for (i = 0; i < savedPalette.length; i++) {
         mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${savedPalette[i]}`;
         mainColorBoxes[i].lastElementChild.innerText = `#${savedPalette[i]}`;
