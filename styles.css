@@ -98,7 +98,10 @@ button {
 
 .mini-container {
     display: flex;
-    margin-bottom: 25px;
+    align-items: center;
+    margin-bottom: 13px;
+    margin-top: 13px;
+    margin-left: 10px;
 }
 
 .mini-box {
@@ -106,6 +109,13 @@ button {
     width: 40px;
     border: 4px solid;
     margin: 0 4px;
+}
+
+.delete-button {
+    height: 38px;
+    width: 38px;
+    border: none;
+    padding: 0 20px;
 }
 
 .lock-box {
@@ -118,7 +128,7 @@ button {
     text-align: center;
 }
 
-.lock-box:hover {
+.hover:hover {
     transform: scale(1.3);
 }
 
