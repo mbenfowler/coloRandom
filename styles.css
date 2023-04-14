@@ -163,8 +163,13 @@ button {
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     height: 350px;
     width: 350px;
+    background-color: #e7f1f1;
     border: 4px solid;
     border-radius: 10%;
     font-size: x-large;
@@ -172,6 +177,7 @@ button {
 
 #modalText {
     padding: 10px;
+    text-align: center;
 }
 
 #deletePaletteButton {
@@ -187,4 +193,9 @@ button {
 
 .hidden {
     display: none;
+}
+
+.block {
+    pointer-events: none;
+    opacity: 0.3;
 }

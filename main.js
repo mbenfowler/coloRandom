@@ -1,6 +1,9 @@
 var savedPalettes = [];
 var currentPalette = [];
+var shouldDelete = false;
 
+var main = document.querySelector('main');
+var savedContainer = document.querySelector('.save-container')
 var buttonSection = document.querySelector('.button-area');
 var newPaletteButton = document.querySelector('button');
 var mainColorBoxes = document.querySelectorAll('.color-container');
@@ -31,21 +34,23 @@ buttonSection.addEventListener('click', function(event) {
     }
 });
 
-
-var shouldDelete = false;
 savedPalettesSection.addEventListener('click', async function(event) {
     if(event.target.classList.contains('delete-button')) {
         deleteModal.classList.toggle('hidden');
+        main.classList.toggle('block');
+        savedContainer.classList.toggle('block');
         await getPromiseFromEvent(deleteModal, 'click')
         if(shouldDelete) {
             var eventTargetParent = event.target.parentNode
             var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
             deletePalette(eventTargetParent, thisSavedPaletteIndex);
-        } else if (event.target.classList.contains('mini-box')){
-            displayMainColours(getSavedPalette(event));
-        }
+        } 
         deleteModal.classList.toggle('hidden');
+        main.classList.toggle('block');
+        savedContainer.classList.toggle('block');
         shouldDelete = false;
+    } else if (event.target.classList.contains('mini-box')) {
+        displayMainColours(getSavedPalette(event));
     }
 });
 
