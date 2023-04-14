@@ -98,7 +98,8 @@ button {
 
 .mini-container {
     display: flex;
-    margin-bottom: 25px;
+    margin-bottom: 13px;
+    margin-top: 13px;
 }
 
 .mini-box {
@@ -118,7 +119,7 @@ button {
     text-align: center;
 }
 
-.lock-box:hover {
+.hover:hover {
     transform: scale(1.3);
 }
 
