@@ -99,7 +99,8 @@ button {
 .mini-container {
     display: flex;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 13px;
+    margin-top: 13px;
     margin-left: 10px;
 }
 
@@ -127,7 +128,7 @@ button {
     text-align: center;
 }
 
-.lock-box:hover {
+.hover:hover {
     transform: scale(1.3);
 }
 
