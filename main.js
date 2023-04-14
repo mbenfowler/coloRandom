@@ -118,6 +118,7 @@ function rgbToHex(rgbNumbers) {
 }  
 
 function displayMainColours(savedPalette) {
+    currentPalette = savedPalette;
     for (i = 0; i < savedPalette.length; i++) {
         mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${savedPalette[i]}`;
         mainColorBoxes[i].lastElementChild.innerText = `#${savedPalette[i]}`;
