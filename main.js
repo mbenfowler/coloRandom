@@ -56,7 +56,7 @@ savedPalettesSection.addEventListener('click', async function(event) {
 
 function getPromiseFromEvent(element, listenerName) {
     return new Promise(function (resolve) {
-        var listener = event => {
+        function listener(event) {
             if(event.target.classList.contains('modal-exit-button')) {
                 shouldDelete = false;
             } else if(event.target.nodeName === 'BUTTON') {
