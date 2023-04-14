@@ -35,7 +35,7 @@ savedPalettesSection.addEventListener('click', function(event) {
         var eventTargetParent = event.target.parentNode;
         var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
         deletePalette(eventTargetParent, thisSavedPaletteIndex);
-    } else {
+    } else if (event.target.classList.contains('mini-box')){
         displayMainColours(getSavedPalette(event));
     }
 });
