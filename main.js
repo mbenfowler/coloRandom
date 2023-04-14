@@ -32,19 +32,19 @@ buttonSection.addEventListener('click', function(event) {
 
 savedPalettesSection.addEventListener('click', function(event) {
     // getSavedPalette(event);
-    displaySavedPalettesSection(getSavedPalette(event));
+    displayMainColours(getSavedPalette(event));
 });
 
-function getNewHexes(mainColorBoxes) {
+function getNewHexes(mainDisplayedColors) {
     var oldHexes = currentPalette;
     currentPalette = [];
     var newColor;
-    for(i = 0; i < mainColorBoxes.length; i++) {
-        var thisColorBoxLock = mainColorBoxes[i].firstElementChild.firstElementChild
+    for(i = 0; i < mainDisplayedColors.length; i++) {
+        var thisColorBoxLock = mainDisplayedColors[i].firstElementChild.firstElementChild
         if(thisColorBoxLock.classList.contains('unlocked')) {
             newColor = getRandomHex().toUpperCase();
-            mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${newColor}`;
-            mainColorBoxes[i].lastElementChild.innerText = `#${newColor}`;
+            mainDisplayedColors[i].firstElementChild.style.backgroundColor = `#${newColor}`;
+            mainDisplayedColors[i].lastElementChild.innerText = `#${newColor}`;
             currentPalette.push(newColor);
         } else { 
             currentPalette.push(oldHexes[i])
@@ -92,14 +92,34 @@ function displaySavedPalettesSection(palette) {
 }
 
 function getSavedPalette(event) {
-    var savedColour = [];
-    
+    var color;
+    var savedColors = [];
     if (event.target.classList.contains('mini-box')) {
         for (var i = 0; i < event.target.parentNode.children.length; i++) {
-            savedColour[i] = event.target.parentNode.children[i].style.backgroundColor;
+            color = event.target.parentNode.children[i].style.backgroundColor;
+            savedColors[i] = rgbToHex(rgbToNumbers(color));
         }
     }
-    console.log(event)
-    console.log(savedColour)
-    return [savedColour];
+
+    return savedColors;
+}
+
+function rgbToNumbers(rgbString) {
+    var rgbArray = rgbString.substring(4, rgbString.length-1).split(',');
+    var rgbNumbers = [];
+    for (var i = 0; i < rgbArray.length; i++) {
+        rgbNumbers.push(Number(rgbArray[i]));
+    }
+    return rgbNumbers;
+}
+
+function rgbToHex(rgbNumbers) {
+    return rgbNumbers[0].toString(16).padStart(2, 0) + rgbNumbers[1].toString(16).padStart(2, 0) + rgbNumbers[2].toString(16).padStart(2, 0);
+}  
+
+function displayMainColours(savedPalette) {
+    for (i = 0; i < savedPalette.length; i++) {
+        mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${savedPalette[i]}`;
+        mainColorBoxes[i].lastElementChild.innerText = `#${savedPalette[i]}`;
+    }
 }
