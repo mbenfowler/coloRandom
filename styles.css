@@ -58,7 +58,6 @@ header {
 }
 
 button {
-    
     background-color: #000000;
     color: #FFFFFF;
     padding-top: 10px;
@@ -159,6 +158,44 @@ button {
     background-color: #A4C4CA;
 }
 
+.modal-window {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    height: 350px;
+    width: 350px;
+    background-color: #e7f1f1;
+    border: 4px solid;
+    border-radius: 10%;
+    font-size: x-large;
+}
+
+#modalText {
+    padding: 10px;
+    text-align: center;
+}
+
+#deletePaletteButton {
+    border-radius: 15px;
+}
+
+.modal-exit-button {
+    height: 38px;
+    width: 38px;
+    border: none;
+    padding-left: 60%;
+}
+
 .hidden {
     display: none;
+}
+
+.block {
+    pointer-events: none;
+    opacity: 0.3;
 }

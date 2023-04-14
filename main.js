@@ -1,11 +1,15 @@
 var savedPalettes = [];
 var currentPalette = [];
+var shouldDelete = false;
 
+var main = document.querySelector('main');
+var savedContainer = document.querySelector('.save-container')
 var buttonSection = document.querySelector('.button-area');
 var newPaletteButton = document.querySelector('button');
 var mainColorBoxes = document.querySelectorAll('.color-container');
 var lockButton = document.querySelector('.main-display');
-var savedPalettesSection = document.querySelector('.mini-palettes');
+var savedPalettesSection = document.querySelector('.mini-palettes')
+var deleteModal = document.querySelector('.modal-window')
 var paragraph = document.querySelector('p');
 
 window.addEventListener('load', function() {
@@ -30,15 +34,40 @@ buttonSection.addEventListener('click', function(event) {
     }
 });
 
-savedPalettesSection.addEventListener('click', function(event) {
+savedPalettesSection.addEventListener('click', async function(event) {
     if(event.target.classList.contains('delete-button')) {
-        var eventTargetParent = event.target.parentNode;
-        var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
-        deletePalette(eventTargetParent, thisSavedPaletteIndex);
-    } else if (event.target.classList.contains('mini-box')){
+        deleteModal.classList.toggle('hidden');
+        main.classList.toggle('block');
+        savedContainer.classList.toggle('block');
+        await getPromiseFromEvent(deleteModal, 'click')
+        if(shouldDelete) {
+            var eventTargetParent = event.target.parentNode
+            var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
+            deletePalette(eventTargetParent, thisSavedPaletteIndex);
+        } 
+        deleteModal.classList.toggle('hidden');
+        main.classList.toggle('block');
+        savedContainer.classList.toggle('block');
+        shouldDelete = false;
+    } else if (event.target.classList.contains('mini-box')) {
         displayMainColours(getSavedPalette(event));
     }
 });
+
+function getPromiseFromEvent(element, listenerName) {
+    return new Promise(function (resolve) {
+        function listener(event) {
+            if(event.target.classList.contains('modal-exit-button')) {
+                shouldDelete = false;
+            } else if(event.target.nodeName === 'BUTTON') {
+                shouldDelete = true;
+            }
+            element.removeEventListener(listenerName, listener);
+            resolve(event);
+        };
+        element.addEventListener(listenerName, listener);
+    });
+}
 
 function getNewHexes(mainDisplayedColors) {
     var oldHexes = currentPalette;
