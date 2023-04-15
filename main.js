@@ -3,13 +3,13 @@ var currentPalette = [];
 var shouldDelete = false;
 
 var main = document.querySelector('main');
-var savedContainer = document.querySelector('.save-container')
+var savedContainer = document.querySelector('.save-container');
 var buttonSection = document.querySelector('.button-area');
 var newPaletteButton = document.querySelector('button');
 var mainColorBoxes = document.querySelectorAll('.color-container');
 var lockButton = document.querySelector('.main-display');
-var savedPalettesSection = document.querySelector('.mini-palettes')
-var deleteModal = document.querySelector('.modal-window')
+var savedPalettesSection = document.querySelector('.mini-palettes');
+var deleteModal = document.querySelector('.modal-window');
 var paragraph = document.querySelector('p');
 
 window.addEventListener('load', function() {
@@ -23,31 +23,27 @@ lockButton.addEventListener('click', function(event) {
 });
 
 buttonSection.addEventListener('click', function(event) {
-    if(event.target.classList.contains('new-palette')) {
+    if (event.target.classList.contains('new-palette')) {
         getNewHexes(mainColorBoxes);
     }
 });
 
 buttonSection.addEventListener('click', function(event) {
-    if(event.target.classList.contains('save-palette')) {
+    if (event.target.classList.contains('save-palette')) {
         savePalette();
     }
 });
 
 savedPalettesSection.addEventListener('click', async function(event) {
-    if(event.target.classList.contains('delete-button')) {
-        deleteModal.classList.toggle('hidden');
-        main.classList.toggle('block');
-        savedContainer.classList.toggle('block');
-        await getPromiseFromEvent(deleteModal, 'click')
-        if(shouldDelete) {
-            var eventTargetParent = event.target.parentNode.parentNode
+    if (event.target.classList.contains('delete-button')) {
+        modalClassToggler();
+        await getPromiseFromEvent(deleteModal, 'click');
+        if (shouldDelete) {
+            var eventTargetParent = event.target.parentNode.parentNode;
             var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
             deletePalette(eventTargetParent, thisSavedPaletteIndex);
         } 
-        deleteModal.classList.toggle('hidden');
-        main.classList.toggle('block');
-        savedContainer.classList.toggle('block');
+        modalClassToggler();
         shouldDelete = false;
     } else if (event.target.classList.contains('mini-box')) {
         displayMainColours(getSavedPalette(event));
@@ -57,9 +53,9 @@ savedPalettesSection.addEventListener('click', async function(event) {
 function getPromiseFromEvent(element, listenerName) {
     return new Promise(function (resolve) {
         function listener(event) {
-            if(event.target.classList.contains('modal-exit-button')) {
+            if (event.target.classList.contains('modal-exit-button')) {
                 shouldDelete = false;
-            } else if(event.target.nodeName === 'BUTTON') {
+            } else if (event.target.nodeName === 'BUTTON') {
                 shouldDelete = true;
             }
             element.removeEventListener(listenerName, listener);
@@ -69,14 +65,20 @@ function getPromiseFromEvent(element, listenerName) {
     });
 }
 
+function modalClassToggler() {
+    deleteModal.classList.toggle('hidden');
+    main.classList.toggle('block');
+    savedContainer.classList.toggle('block');
+}
+
 function getNewHexes(mainDisplayedColors) {
     var oldHexes = currentPalette;
     currentPalette = [];
     var newColor;
-    for(i = 0; i < mainDisplayedColors.length; i++) {
+    for (i = 0; i < mainDisplayedColors.length; i++) {
         var thisColorBoxLock = mainDisplayedColors[i].firstElementChild.firstElementChild;
-        if(thisColorBoxLock.classList.contains('unlocked')) {
-            newColor = getRandomHex().toUpperCase();
+        if (thisColorBoxLock.classList.contains('unlocked')) {
+            newColor = getRandomHex();
             mainDisplayedColors[i].firstElementChild.style.backgroundColor = `#${newColor}`;
             mainDisplayedColors[i].lastElementChild.innerText = `#${newColor}`;
             currentPalette.push(newColor);
@@ -96,10 +98,21 @@ function toggleLock(event) {
 }
 
 function getRandomHex() {
-    return (Math.floor(Math.random() * 16777216).toString(16).padStart(6, 0));
+    return (Math.floor(Math.random() * 16777216).toString(16).padStart(6, 0)).toUpperCase();
 }
 
-function uniquePalettes(palettesList, singlePalette) {
+function savePalette() {
+    if (!savedPalettes.length) {
+        paragraph.classList.add('hidden');
+    } 
+    if (isPaletteUnique(savedPalettes, currentPalette)) {
+        savedPalettes.push(currentPalette);
+        addPaletteToSavedPalettes(currentPalette);
+    }
+    getNewHexes(mainColorBoxes);
+}
+
+function isPaletteUnique(palettesList, singlePalette) {
     for (i = 0; i < palettesList.length; i++) {
         var matches = true;
         for (j = 0; j < palettesList[i].length; j++) {
@@ -115,16 +128,6 @@ function uniquePalettes(palettesList, singlePalette) {
     return true;
 }
 
-function savePalette() {
-    if (!savedPalettes.length) {
-        savedPalettes.push(currentPalette)
-    } else if (uniquePalettes(savedPalettes, currentPalette)) {
-        savedPalettes.push(currentPalette)
-    }
-    displaySavedPalettesSection(savedPalettes);
-    getNewHexes(mainColorBoxes);
-}
-
 function deletePalette(savedPalette, savedPalettesIndex) {
     savedPalettes.splice(savedPalettesIndex, 1);
     savedPalette.remove();
@@ -133,24 +136,24 @@ function deletePalette(savedPalette, savedPalettesIndex) {
     }
 }
 
-function displaySavedPalettesSection(palette) {
-    savedPalettesSection.innerHTML = '';
-    paragraph.classList.add('hidden');
+function addPaletteToSavedPalettes(palette) {
+    var newMiniContainer = document.createElement('div');
+    var newMiniColorsContainer = document.createElement('div');
+    var newHoverContainer = document.createElement('div');
+
+    newMiniContainer.classList.add('mini-container');
+    newHoverContainer.classList.add('hover');
+    newMiniColorsContainer.classList.add('hover', 'mini-colors');
+    
+    savedPalettesSection.appendChild(newMiniContainer);    
+    newMiniContainer.appendChild(newMiniColorsContainer);
+
     for (i = 0; i < palette.length; i++) {
-        savedPalettesSection.innerHTML += `
-        <div class="mini-container">
-            <div class="hover mini-colors">
-                <div class="mini-box", style="background-color: #${palette[i][0]}"></div>
-                <div class="mini-box", style="background-color: #${palette[i][1]}"></div>
-                <div class="mini-box", style="background-color: #${palette[i][2]}"></div>
-                <div class="mini-box", style="background-color: #${palette[i][3]}"></div>
-                <div class="mini-box", style="background-color: #${palette[i][4]}"></div>
-            </div>
-            <div class="hover">
-                <img class="delete-button" src='./assets/delete.png'></img>
-            </div>
-        </div>`
+        newMiniColorsContainer.innerHTML += `<div class="mini-box", style="background-color: #${palette[i]}"></div>`;
     }
+    
+    newMiniContainer.appendChild(newHoverContainer);
+    newHoverContainer.innerHTML += `<img class="delete-button" src='./assets/delete.png'></img>`;
 }
 
 function getSavedPalette(event) {
@@ -175,7 +178,12 @@ function rgbToNumbers(rgbString) {
 }
 
 function rgbToHex(rgbNumbers) {
-    return (rgbNumbers[0].toString(16).padStart(2, 0) + rgbNumbers[1].toString(16).padStart(2, 0) + rgbNumbers[2].toString(16).padStart(2, 0)).toUpperCase();
+    rgbToHexString = '';
+    for (var i = 0; i < rgbNumbers.length; i++) {
+        rgbToHexString += rgbNumbers[i].toString(16).padStart(2, 0);
+    }
+
+    return rgbToHexString.toUpperCase();
 }  
 
 function displayMainColours(savedPalette) {
