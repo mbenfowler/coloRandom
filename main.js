@@ -49,7 +49,7 @@ savedPalettesSection.addEventListener('click', async function(event) {
         main.classList.toggle('block');
         savedContainer.classList.toggle('block');
         shouldDelete = false;
-    } else if (event.target.classList.contains('mini-box')) {
+    } else if(event.target.classList.contains('mini-box')) {
         displayMainColours(getSavedPalette(event));
     }
 });
@@ -76,7 +76,7 @@ function getNewHexes(mainDisplayedColors) {
     for(i = 0; i < mainDisplayedColors.length; i++) {
         var thisColorBoxLock = mainDisplayedColors[i].firstElementChild.firstElementChild;
         if(thisColorBoxLock.classList.contains('unlocked')) {
-            newColor = getRandomHex().toUpperCase();
+            newColor = getRandomHex();
             mainDisplayedColors[i].firstElementChild.style.backgroundColor = `#${newColor}`;
             mainDisplayedColors[i].lastElementChild.innerText = `#${newColor}`;
             currentPalette.push(newColor);
@@ -96,10 +96,21 @@ function toggleLock(event) {
 }
 
 function getRandomHex() {
-    return (Math.floor(Math.random() * 16777216).toString(16).padStart(6, 0));
+    return (Math.floor(Math.random() * 16777216).toString(16).padStart(6, 0)).toUpperCase();
 }
 
-function uniquePalettes(palettesList, singlePalette) {
+function savePalette() {
+    if (!savedPalettes.length) {
+        paragraph.classList.add('hidden');
+        savedPalettes.push(currentPalette)
+    } else if (isPaletteUnique(savedPalettes, currentPalette)) {
+        savedPalettes.push(currentPalette)
+    }
+    addPaletteToSavedPalettes(currentPalette);
+    getNewHexes(mainColorBoxes);
+}
+
+function isPaletteUnique(palettesList, singlePalette) {
     for (i = 0; i < palettesList.length; i++) {
         var matches = true;
         for (j = 0; j < palettesList[i].length; j++) {
@@ -115,40 +126,22 @@ function uniquePalettes(palettesList, singlePalette) {
     return true;
 }
 
-function savePalette() {
-    if (!savedPalettes.length) {
-        savedPalettes.push(currentPalette)
-    } else if (uniquePalettes(savedPalettes, currentPalette)) {
-        savedPalettes.push(currentPalette)
-    }
-    displaySavedPalettesSection(savedPalettes);
-    getNewHexes(mainColorBoxes);
-}
-
 function deletePalette(savedPalette, savedPalettesIndex) {
     savedPalettes.splice(savedPalettesIndex, 1);
     savedPalette.remove();
+    if (!savedPalettes.length) {
+        paragraph.classList.remove('hidden');
+    }
 }
 
-function displaySavedPalettesSection(palette) {
-    savedPalettesSection.innerHTML = '';
-    if (!palette.length) {
-        paragraph.classList.remove('hidden');
-    } else {
-        paragraph.classList.add('hidden');
-        for (i = 0; i < palette.length; i++) {
-            savedPalettesSection.innerHTML += `
-            <div class="mini-container hover">
-                <div class="mini-box", style="background-color: #${palette[i][0]}"></div>
-                <div class="mini-box", style="background-color: #${palette[i][1]}"></div>
-                <div class="mini-box", style="background-color: #${palette[i][2]}"></div>
-                <div class="mini-box", style="background-color: #${palette[i][3]}"></div>
-                <div class="mini-box", style="background-color: #${palette[i][4]}"></div>
-                <img class="delete-button" src='./assets/delete.png'></img>
-            </div>
-            `
-        }
+function addPaletteToSavedPalettes(palette) {
+    var newMiniContainer = document.createElement('div');
+    newMiniContainer.classList.add('mini-container', 'hover');
+    savedPalettesSection.appendChild(newMiniContainer);
+    for (i = 0; i < palette.length; i++) {
+        newMiniContainer.innerHTML += `<div class="mini-box", style="background-color: #${palette[i]}"></div>`
     }
+    newMiniContainer.innerHTML += `<img class="delete-button" src='./assets/delete.png'></img>`
 }
 
 function getSavedPalette(event) {
@@ -173,7 +166,12 @@ function rgbToNumbers(rgbString) {
 }
 
 function rgbToHex(rgbNumbers) {
-    return (rgbNumbers[0].toString(16).padStart(2, 0) + rgbNumbers[1].toString(16).padStart(2, 0) + rgbNumbers[2].toString(16).padStart(2, 0)).toUpperCase();
+    rgbToHexString = '';
+    for(var i = 0; i < rgbNumbers.length; i++) {
+        rgbToHexString += rgbNumbers[i].toString(16).padStart(2, 0)
+    }
+
+    return rgbToHexString.toUpperCase();
 }  
 
 function displayMainColours(savedPalette) {
