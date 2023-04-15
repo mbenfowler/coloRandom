@@ -6,7 +6,6 @@ html {
     height: 100%;
     background-color: #e7f1f1;
 }
-
 body {
     height: 100%;
     display: flex;
@@ -61,7 +60,8 @@ header {
 button {
     background-color: #000000;
     color: #FFFFFF;
-    padding: 10px 0 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     font-size: x-large;
     font-weight: 200;
     border: none;
@@ -98,7 +98,9 @@ button {
 .mini-container {
     display: flex;
     align-items: center;
-    margin: 13px 0 13px 10px;
+    margin-bottom: 13px;
+    margin-top: 13px;
+    margin-left: 10px;
 }
 
 .mini-box {
@@ -136,6 +138,26 @@ button {
     font-size: 1.2em;
 }
 
+#b1 {
+    background-color: #EA9999;
+}
+
+#b2 {
+    background-color: #FACB9C;
+}
+
+#b3 {
+    background-color: #FFE59A;
+}
+
+#b4 {
+    background-color: #B6D7A8;
+}
+
+#b5 {
+    background-color: #A4C4CA;
+}
+
 .modal-window {
     display: inline-flex;
     flex-direction: column;
@@ -160,7 +182,6 @@ button {
 
 #deletePaletteButton {
     border-radius: 15px;
-    padding: 10px;
 }
 
 .modal-exit-button {
