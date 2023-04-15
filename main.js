@@ -36,18 +36,14 @@ buttonSection.addEventListener('click', function(event) {
 
 savedPalettesSection.addEventListener('click', async function(event) {
     if(event.target.classList.contains('delete-button')) {
-        deleteModal.classList.toggle('hidden');
-        main.classList.toggle('block');
-        savedContainer.classList.toggle('block');
+        modalClassToggler();
         await getPromiseFromEvent(deleteModal, 'click')
         if(shouldDelete) {
             var eventTargetParent = event.target.parentNode
             var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
             deletePalette(eventTargetParent, thisSavedPaletteIndex);
         } 
-        deleteModal.classList.toggle('hidden');
-        main.classList.toggle('block');
-        savedContainer.classList.toggle('block');
+        modalClassToggler()
         shouldDelete = false;
     } else if(event.target.classList.contains('mini-box')) {
         displayMainColours(getSavedPalette(event));
@@ -67,6 +63,12 @@ function getPromiseFromEvent(element, listenerName) {
         };
         element.addEventListener(listenerName, listener);
     });
+}
+
+function modalClassToggler() {
+    deleteModal.classList.toggle('hidden');
+    main.classList.toggle('block');
+    savedContainer.classList.toggle('block');
 }
 
 function getNewHexes(mainDisplayedColors) {
