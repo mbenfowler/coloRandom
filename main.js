@@ -104,11 +104,11 @@ function getRandomHex() {
 function savePalette() {
     if (!savedPalettes.length) {
         paragraph.classList.add('hidden');
+    } 
+    if (isPaletteUnique(savedPalettes, currentPalette)) {
         savedPalettes.push(currentPalette)
-    } else if (isPaletteUnique(savedPalettes, currentPalette)) {
-        savedPalettes.push(currentPalette)
+        addPaletteToSavedPalettes(currentPalette);
     }
-    addPaletteToSavedPalettes(currentPalette);
     getNewHexes(mainColorBoxes);
 }
 
