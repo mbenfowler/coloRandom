@@ -75,7 +75,7 @@ function getNewHexes(mainDisplayedColors) {
     var oldHexes = currentPalette;
     currentPalette = [];
     var newColor;
-    for(i = 0; i < mainDisplayedColors.length; i++) {
+    for(var i = 0; i < mainDisplayedColors.length; i++) {
         var thisColorBoxLock = mainDisplayedColors[i].firstElementChild.firstElementChild;
         if(thisColorBoxLock.classList.contains('unlocked')) {
             newColor = getRandomHex();
@@ -144,7 +144,7 @@ function addPaletteToSavedPalettes(palette) {
     var newMiniContainer = document.createElement('div');
     newMiniContainer.classList.add('mini-container', 'hover');
     savedPalettesSection.appendChild(newMiniContainer);
-    for (i = 0; i < palette.length; i++) {
+    for (var i = 0; i < palette.length; i++) {
         newMiniContainer.innerHTML += `<div class="mini-box", style="background-color: #${palette[i]}"></div>`
     }
     newMiniContainer.innerHTML += `<img class="delete-button" src='./assets/delete.png'></img>`
@@ -182,7 +182,7 @@ function rgbToHex(rgbNumbers) {
 
 function displayMainColours(savedPalette) {
     currentPalette = savedPalette;
-    for (i = 0; i < savedPalette.length; i++) {
+    for (var i = 0; i < savedPalette.length; i++) {
         mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${savedPalette[i]}`;
         mainColorBoxes[i].lastElementChild.innerText = `#${savedPalette[i]}`;
     }
