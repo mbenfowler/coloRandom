@@ -37,7 +37,7 @@ buttonSection.addEventListener('click', function(event) {
 savedPalettesSection.addEventListener('click', async function(event) {
     if (event.target.classList.contains('delete-button')) {
         modalClassToggler();
-        await getPromiseFromEvent(deleteModal, 'click');
+        await getPromiseFromEvent(deleteModal);
         if (shouldDelete) {
             var eventTargetParent = event.target.parentNode.parentNode;
             var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
@@ -50,18 +50,20 @@ savedPalettesSection.addEventListener('click', async function(event) {
     }
 });
 
-function getPromiseFromEvent(element, listenerName) {
+function getPromiseFromEvent(event) {
+
     return new Promise(function (resolve) {
+        event.addEventListener('click', listener);
+
         function listener(event) {
             if (event.target.classList.contains('modal-exit-button')) {
                 shouldDelete = false;
-            } else if (event.target.nodeName === 'BUTTON') {
+                resolve(event);
+            } else if (event.target.classList.contains('delete-palette-button')) {
                 shouldDelete = true;
+                resolve(event);
             }
-            element.removeEventListener(listenerName, listener);
-            resolve(event);
         };
-        element.addEventListener(listenerName, listener);
     });
 }
 
@@ -151,7 +153,7 @@ function addPaletteToSavedPalettes(palette) {
     for (i = 0; i < palette.length; i++) {
         newMiniColorsContainer.innerHTML += `<div class="mini-box", style="background-color: #${palette[i]}"></div>`;
     }
-    
+
     newMiniContainer.appendChild(newHoverContainer);
     newHoverContainer.innerHTML += `<img class="delete-button" src='./assets/delete.png'></img>`;
 }
