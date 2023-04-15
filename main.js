@@ -112,20 +112,25 @@ function savePalette() {
     getNewHexes(mainColorBoxes);
 }
 
+
 function isPaletteUnique(palettesList, singlePalette) {
     for (i = 0; i < palettesList.length; i++) {
-        var matches = true;
-        for (j = 0; j < palettesList[i].length; j++) {
-            if (palettesList[i][j] !== singlePalette[j]) {
-                matches = false;
-                break;
-            }
-        }
-        if (matches) {
+        if (areArraysEquivalent(palettesList[i], singlePalette)) {
             return false;
+        } 
+    }
+    return true;   
+}    
+
+function areArraysEquivalent(array1, array2) {
+    var matches = true;
+    for (i = 0; i < array1.length; i++) {
+        if (array1[i] !== array2[i]) {
+            matches = false;
+            break;
         }
-    }    
-    return true;
+    }
+    return matches;
 }
 
 function deletePalette(savedPalette, savedPalettesIndex) {
