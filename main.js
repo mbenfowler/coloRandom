@@ -41,7 +41,7 @@ savedPalettesSection.addEventListener('click', async function(event) {
         savedContainer.classList.toggle('block');
         await getPromiseFromEvent(deleteModal, 'click')
         if(shouldDelete) {
-            var eventTargetParent = event.target.parentNode
+            var eventTargetParent = event.target.parentNode.parentNode
             var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
             deletePalette(eventTargetParent, thisSavedPaletteIndex);
         } 
@@ -128,26 +128,28 @@ function savePalette() {
 function deletePalette(savedPalette, savedPalettesIndex) {
     savedPalettes.splice(savedPalettesIndex, 1);
     savedPalette.remove();
+    if (!savedPalettes.length) {
+        paragraph.classList.remove('hidden');
+    }
 }
 
 function displaySavedPalettesSection(palette) {
     savedPalettesSection.innerHTML = '';
-    if (!palette.length) {
-        paragraph.classList.remove('hidden');
-    } else {
-        paragraph.classList.add('hidden');
-        for (i = 0; i < palette.length; i++) {
-            savedPalettesSection.innerHTML += `
-            <div class="mini-container hover">
+    paragraph.classList.add('hidden');
+    for (i = 0; i < palette.length; i++) {
+        savedPalettesSection.innerHTML += `
+        <div class="mini-container">
+            <div class="hover mini-colors">
                 <div class="mini-box", style="background-color: #${palette[i][0]}"></div>
                 <div class="mini-box", style="background-color: #${palette[i][1]}"></div>
                 <div class="mini-box", style="background-color: #${palette[i][2]}"></div>
                 <div class="mini-box", style="background-color: #${palette[i][3]}"></div>
                 <div class="mini-box", style="background-color: #${palette[i][4]}"></div>
+            </div>
+            <div class="hover">
                 <img class="delete-button" src='./assets/delete.png'></img>
             </div>
-            `
-        }
+        </div>`
     }
 }
 
@@ -155,7 +157,7 @@ function getSavedPalette(event) {
     var color;
     var savedColors = [];
     if (event.target.classList.contains('mini-box')) {
-        for (var i = 0; i < event.target.parentNode.children.length - 1; i++) {
+        for (var i = 0; i < event.target.parentNode.children.length; i++) {
             color = event.target.parentNode.children[i].style.backgroundColor;
             savedColors[i] = rgbToHex(rgbToNumbers(color));
         }
