@@ -42,8 +42,7 @@ header {
 }
 
 #paletteName {
-    display: inline-flex;
-    justify-content: center;
+    text-align: center;
     font-size: x-large;
     font-weight: 500;
     font-style: italic;

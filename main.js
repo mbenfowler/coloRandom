@@ -76,6 +76,7 @@ function modalClassToggler() {
 }
 
 function getNewHexes(mainDisplayedColors) {
+    paletteName.classList.add('hidden');
     var oldHexes = currentPalette.hexes;
     currentPalette = {
         hexes: [],
@@ -205,10 +206,15 @@ function rgbToHex(rgbNumbers) {
 
 function displayMainColours(savedPalette) {
     currentPalette = savedPalette;
-    paletteName.innerText = `palette name: "${currentPalette.name}"`;
-    paletteName.classList.remove('hidden');
-    for (i = 0; i < savedPalette.length; i++) {
-        mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${savedPalette[i]}`;
-        mainColorBoxes[i].lastElementChild.innerText = `#${savedPalette[i]}`;
+    if (savedPalette.name) {
+        paletteName.innerText = `palette name: "${currentPalette.name}"`;
+        paletteName.classList.remove('hidden');
+    } else {
+        paletteName.classList.add('hidden');
+    }
+    
+    for (i = 0; i < currentPalette.hexes.length; i++) {
+        mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${savedPalette.hexes[i]}`;
+        mainColorBoxes[i].lastElementChild.innerText = `#${savedPalette.hexes[i]}`;
     }
 }
