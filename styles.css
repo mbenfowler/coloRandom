@@ -41,6 +41,14 @@ header {
     text-align: center;
 }
 
+#paletteName {
+    display: inline-flex;
+    justify-content: center;
+    font-size: x-large;
+    font-weight: 500;
+    font-style: italic;
+}
+
 .main-display,
 .button-area {
     display: flex;

@@ -3,6 +3,7 @@ var currentPalette = {};
 var shouldDelete = false;
 
 var main = document.querySelector('main');
+var paletteName = document.getElementById('paletteName')
 var savedContainer = document.querySelector('.save-container');
 var buttonSection = document.querySelector('.button-area');
 var newPaletteButton = document.querySelector('button');
@@ -176,15 +177,12 @@ function addPaletteToSavedPalettes(palette) {
 }
 
 function getSavedPalette(event) {
-    var color;
-    var savedColors = [];
     if (event.target.classList.contains('mini-box')) {
-        for (var i = 0; i < event.target.parentNode.children.length - 1; i++) {
-            color = event.target.parentNode.children[i].style.backgroundColor;
-            savedColors[i] = rgbToHex(rgbToNumbers(color));
-        }
+        var eventTargetParent = event.target.parentNode;
+        var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
+        var thisSavedPalette = savedPalettes[thisSavedPaletteIndex];
+        return thisSavedPalette;
     }
-    return savedColors;
 }
 
 function rgbToNumbers(rgbString) {
@@ -207,6 +205,8 @@ function rgbToHex(rgbNumbers) {
 
 function displayMainColours(savedPalette) {
     currentPalette = savedPalette;
+    paletteName.innerText = `palette name: "${currentPalette.name}"`;
+    paletteName.classList.remove('hidden');
     for (i = 0; i < savedPalette.length; i++) {
         mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${savedPalette[i]}`;
         mainColorBoxes[i].lastElementChild.innerText = `#${savedPalette[i]}`;
