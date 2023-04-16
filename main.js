@@ -1,5 +1,5 @@
 var savedPalettes = [];
-var currentPalette = [];
+var currentPalette = {};
 var shouldDelete = false;
 
 var main = document.querySelector('main');
@@ -9,7 +9,10 @@ var newPaletteButton = document.querySelector('button');
 var mainColorBoxes = document.querySelectorAll('.color-container');
 var lockButton = document.querySelector('.main-display');
 var savedPalettesSection = document.querySelector('.mini-palettes');
-var deleteModal = document.querySelector('.modal-window');
+var saveModal = document.getElementById('namePaletteModal');
+var saveModalInput = document.querySelector('input');
+var saveModalButton = document.getElementById('savePaletteButton');
+var deleteModal = document.getElementById('deletePaletteModal');
 var paragraph = document.querySelector('p');
 
 window.addEventListener('load', function() {
@@ -72,8 +75,11 @@ function modalClassToggler() {
 }
 
 function getNewHexes(mainDisplayedColors) {
-    var oldHexes = currentPalette;
-    currentPalette = [];
+    var oldHexes = currentPalette.hexes;
+    currentPalette = {
+        hexes: [],
+        name: ''
+    };
     var newColor;
     for (i = 0; i < mainDisplayedColors.length; i++) {
         var thisColorBoxLock = mainDisplayedColors[i].firstElementChild.firstElementChild;
@@ -81,9 +87,9 @@ function getNewHexes(mainDisplayedColors) {
             newColor = getRandomHex();
             mainDisplayedColors[i].firstElementChild.style.backgroundColor = `#${newColor}`;
             mainDisplayedColors[i].lastElementChild.innerText = `#${newColor}`;
-            currentPalette.push(newColor);
+            currentPalette.hexes.push(newColor);
         } else { 
-            currentPalette.push(oldHexes[i]);
+            currentPalette.hexes.push(oldHexes[i]);
         }
     }
 }
@@ -101,22 +107,45 @@ function getRandomHex() {
     return (Math.floor(Math.random() * 16777216).toString(16).padStart(6, 0)).toUpperCase();
 }
 
-function savePalette() {
+async function savePalette() {
+    modalClassToggler2();
     if (!savedPalettes.length) {
         paragraph.classList.add('hidden');
     } 
     if (isPaletteUnique(savedPalettes, currentPalette)) {
+        await getPromiseFromEvent2(saveModalButton, 'click');
         savedPalettes.push(currentPalette);
         addPaletteToSavedPalettes(currentPalette);
     }
+    modalClassToggler2();
     getNewHexes(mainColorBoxes);
 }
 
-function isPaletteUnique(palettesList, singlePalette) {
-    for (i = 0; i < palettesList.length; i++) {
+function getPromiseFromEvent2(element, listenerName) {
+    return new Promise(function (resolve) {
+        function listener(event) {
+            if (event.target.nodeName === 'BUTTON') {
+                currentPalette.name = saveModalInput.value;
+                saveModalInput.value = ''
+            }
+            element.removeEventListener(listenerName, listener);
+            resolve(event);
+        };
+        element.addEventListener(listenerName, listener);
+    });
+}
+
+function modalClassToggler2() {
+    saveModal.classList.toggle('hidden');
+    main.classList.toggle('block');
+    savedContainer.classList.toggle('block');
+}
+
+function isPaletteUnique(savedPalettes, currentPalette) {
+    for (i = 0; i < savedPalettes.length; i++) {
         var matches = true;
-        for (j = 0; j < palettesList[i].length; j++) {
-            if (palettesList[i][j] !== singlePalette[j]) {
+        for (j = 0; j < savedPalettes[i].hexes.length; j++) {
+            if (savedPalettes[i].hexes[j] !== currentPalette.hexes[j]) {
                 matches = false;
                 break;
             }
@@ -140,8 +169,8 @@ function addPaletteToSavedPalettes(palette) {
     var newMiniContainer = document.createElement('div');
     newMiniContainer.classList.add('mini-container', 'hover');
     savedPalettesSection.appendChild(newMiniContainer);
-    for (i = 0; i < palette.length; i++) {
-        newMiniContainer.innerHTML += `<div class="mini-box", style="background-color: #${palette[i]}"></div>`;
+    for (i = 0; i < palette.hexes.length; i++) {
+        newMiniContainer.innerHTML += `<div class="mini-box", style="background-color: #${palette.hexes[i]}"></div>`;
     }
     newMiniContainer.innerHTML += `<img class="delete-button" src='./assets/delete.png'></img>`;
 }
