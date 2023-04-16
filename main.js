@@ -114,7 +114,6 @@ function savePalette() {
 
 function isPaletteUnique(palettesList, singlePalette) {
     for (var i = 0; i < palettesList.length; i++) {
-        console.log('isPaletteUnique', i);
         if (areArraysEquivalent(palettesList[i], singlePalette)) {
             return false;
         } 
@@ -122,10 +121,9 @@ function isPaletteUnique(palettesList, singlePalette) {
     return true;   
 }    
 
-function areArraysEquivalent(array1, array2) {
-    for (var i = 0; i < array1.length; i++) {
-        console.log('areArraysEquivalent', i);
-        if (array1[i] !== array2[i]) {
+function areArraysEquivalent(palettesToCheck, currentPalette) {
+    for (var i = 0; i < palettesToCheck.length; i++) {
+        if (palettesToCheck[i] !== currentPalette[i]) {
             return false;
         }
     }
