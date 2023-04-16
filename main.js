@@ -40,14 +40,14 @@ buttonSection.addEventListener('click', function(event) {
 
 savedPalettesSection.addEventListener('click', async function(event) {
     if (event.target.classList.contains('delete-button')) {
-        modalClassToggler();
+        modalClassToggler([[deleteModal, 'hidden'], [main, 'block'], [savedContainer, 'block']]);
         await getPromiseFromEvent(deleteModal, 'click');
         if (shouldDelete) {
             var eventTargetParent = event.target.parentNode;
             var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
             deletePalette(eventTargetParent, thisSavedPaletteIndex);
         } 
-        modalClassToggler();
+        modalClassToggler([[deleteModal, 'hidden'], [main, 'block'], [savedContainer, 'block']]);
         shouldDelete = false;
     } else if (event.target.classList.contains('mini-box')) {
         displayMainColours(getSavedPalette(event));
@@ -69,10 +69,11 @@ function getPromiseFromEvent(element, listenerName) {
     });
 }
 
-function modalClassToggler() {
-    deleteModal.classList.toggle('hidden');
-    main.classList.toggle('block');
-    savedContainer.classList.toggle('block');
+function modalClassToggler(elementsClasses) {
+    for (var i = 0; i < elementsClasses.length; i++) {
+        console.log(elementsClasses[i][0].classList)
+        elementsClasses[i][0].classList.toggle(elementsClasses[i][1]);
+    }
 }
 
 function getNewHexes(mainDisplayedColors) {
@@ -110,7 +111,7 @@ function getRandomHex() {
 }
 
 async function savePalette() {
-    modalClassToggler2();
+    modalClassToggler([[saveModal, 'hidden'], [main, 'block'], [savedContainer, 'block']]);
     if (!savedPalettes.length) {
         paragraph.classList.add('hidden');
     } 
@@ -119,7 +120,7 @@ async function savePalette() {
         savedPalettes.push(currentPalette);
         addPaletteToSavedPalettes(currentPalette);
     }
-    modalClassToggler2();
+    modalClassToggler([[saveModal, 'hidden'], [main, 'block'], [savedContainer, 'block']]);
     getNewHexes(mainColorBoxes);
 }
 
@@ -135,12 +136,6 @@ function getPromiseFromEvent2(element, listenerName) {
         };
         element.addEventListener(listenerName, listener);
     });
-}
-
-function modalClassToggler2() {
-    saveModal.classList.toggle('hidden');
-    main.classList.toggle('block');
-    savedContainer.classList.toggle('block');
 }
 
 function isPaletteUnique(savedPalettes, currentPalette) {
