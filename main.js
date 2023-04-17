@@ -76,7 +76,8 @@ function getNewHexes(mainDisplayedColors) {
     var oldHexes = currentPalette;
     currentPalette = [];
     var newColor;
-    for (i = 0; i < mainDisplayedColors.length; i++) {
+    for(var i = 0; i < mainDisplayedColors.length; i++) {
+
         var thisColorBoxLock = mainDisplayedColors[i].firstElementChild.firstElementChild;
         if (thisColorBoxLock.classList.contains('unlocked')) {
             newColor = getRandomHex();
@@ -114,18 +115,20 @@ function savePalette() {
 }
 
 function isPaletteUnique(palettesList, singlePalette) {
-    for (i = 0; i < palettesList.length; i++) {
-        var matches = true;
-        for (j = 0; j < palettesList[i].length; j++) {
-            if (palettesList[i][j] !== singlePalette[j]) {
-                matches = false;
-                break;
-            }
-        }
-        if (matches) {
+    for (var i = 0; i < palettesList.length; i++) {
+        if (areArraysEquivalent(palettesList[i], singlePalette)) {
+            return false;
+        } 
+    }
+    return true;   
+}    
+
+function areArraysEquivalent(palettesToCheck, currentPalette) {
+    for (var i = 0; i < palettesToCheck.length; i++) {
+        if (palettesToCheck[i] !== currentPalette[i]) {
             return false;
         }
-    }    
+    }
     return true;
 }
 
@@ -149,7 +152,7 @@ function addPaletteToSavedPalettes(palette) {
     savedPalettesSection.appendChild(newMiniContainer);    
     newMiniContainer.appendChild(newMiniColorsContainer);
 
-    for (i = 0; i < palette.length; i++) {
+    for (var i = 0; i < palette.length; i++) {
         newMiniColorsContainer.innerHTML += `<div class="mini-box", style="background-color: #${palette[i]}"></div>`;
     }
 
@@ -189,7 +192,7 @@ function rgbToHex(rgbNumbers) {
 
 function displayMainColours(savedPalette) {
     currentPalette = savedPalette;
-    for (i = 0; i < savedPalette.length; i++) {
+    for (var i = 0; i < savedPalette.length; i++) {
         mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${savedPalette[i]}`;
         mainColorBoxes[i].lastElementChild.innerText = `#${savedPalette[i]}`;
     }
