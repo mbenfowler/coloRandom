@@ -42,7 +42,7 @@ buttonSection.addEventListener('click', function(event) {
 savedPalettesSection.addEventListener('click', async function(event) {
     if (event.target.classList.contains('delete-button')) {
         modalClassToggler([[deleteModal, 'hidden'], [main, 'block'], [savedContainer, 'block']]);
-        await getPromiseFromEvent(deleteModal);
+        await getPromiseFromConfirmDelete(deleteModal);
         if (shouldDelete) {
             var eventTargetParent = event.target.parentNode.parentNode;
             var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
@@ -55,7 +55,7 @@ savedPalettesSection.addEventListener('click', async function(event) {
     }
 });
 
-function getPromiseFromEvent(event) {
+function getPromiseFromConfirmDelete(event) {
     return new Promise(function (resolve) {
         event.addEventListener('click', listener);
         function listener(event) {
@@ -117,7 +117,7 @@ async function savePalette() {
         paragraph.classList.add('hidden');
     } 
     if (isPaletteUnique(savedPalettes, currentPalette)) {
-        await getPromiseFromEvent2(confirmSaveButtonArea, 'click');
+        await getPromiseFromConfirmSave(confirmSaveButtonArea, 'click');
         savedPalettes.push(currentPalette);
         addPaletteToSavedPalettes(currentPalette);
     }
@@ -125,7 +125,7 @@ async function savePalette() {
     getNewHexes(mainColorBoxes);
 }
 
-function getPromiseFromEvent2(element, listenerName) {
+function getPromiseFromConfirmSave(element, listenerName) {
     return new Promise(function (resolve) {
         async function listener(event) {
             if (event.target.classList.contains('confirm-save-palette-button')) {
