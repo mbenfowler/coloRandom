@@ -46,12 +46,16 @@
                 </div>
             </section>
             <section class="button-area">
-                <div class="button-box-l new-palette"></div>
-                <button class="new-palette">New Palette</button>
-                <div class="button-box-r new-palette"></div>
-                <div class="button-box-l save-palette"></div>
-                <button class="save-palette">Save Palette</button>
-                <div class="button-box-r save-palette"></div>
+                <div class="hover button-area">
+                    <div class="button-box-l new-palette"></div>
+                    <button class="new-palette">New Palette</button>
+                    <div class="button-box-r new-palette"></div>
+                </div>
+                <div class="hover button-area">
+                    <div class="button-box-l save-palette"></div>
+                    <button class="save-palette">Save Palette</button>
+                    <div class="button-box-r save-palette"></div>
+                </div>
             </section>
         </main>
         <section class="save-container">
@@ -67,9 +71,13 @@
             <button id="savePaletteButton">Save</button>
         </div>
         <div class="modal-window hidden" id="deletePaletteModal">
-            <img class="modal-exit-button" src='./assets/delete.png'></img>
-            <span id="deletetModalText">Are you sure you want to delete this palette?</span>
-            <button id="deletePaletteButton">Delete this palette</button>
+            <img class="modal-exit-button hover" src='./assets/delete.png'></img>
+            <span id="deleteModalText">Are you sure you want to delete this palette?</span>
+            <div class="hover button-area">
+                <div class="button-box-l delete-palette-button"></div>
+                <button id="deletePaletteButton">Delete this palette</button>
+                <div class="button-box-r delete-palette-button"></div>
+            </div>
         </div>
         <script src="./main.js"></script>
     </body>

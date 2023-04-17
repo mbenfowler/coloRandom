@@ -49,7 +49,8 @@ header {
 }
 
 .main-display,
-.button-area {
+.button-area,
+.mini-colors {
     display: flex;
     justify-content: center;
 }
@@ -154,7 +155,7 @@ button {
     left: 50%;
     translate: -50% -50%;
     height: 350px;
-    width: 350px;
+    width: 425px;
     background-color: #e7f1f1;
     border: 4px solid;
     border-radius: 10%;
@@ -166,6 +167,7 @@ button {
     text-align: center;
 }
 
+<<<<<<< HEAD
 #deletePaletteButton {
     border-radius: 15px;
     padding: 10px;
@@ -188,7 +190,7 @@ button {
     height: 38px;
     width: 38px;
     border: none;
-    padding-left: 60%;
+    translate: 450%;
 }
 
 .hidden {
