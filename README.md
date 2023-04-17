@@ -30,7 +30,7 @@ The project was assigned on 2023.04.10, and was completed by 2023.04.17, the pro
 
 ### Contributors:
 [//]: <> (Who worked on this application? Link to their GitHubs.)
-[Jason Alberto](https://github.com/jalbe0076), [Seth Burns](https://github.com/SethBurns) & [Math Fowler](https://github.com/mbfowler) worked on this application. 
+[Jason Alberto](https://github.com/jalbe0076), [Seth Burns](https://github.com/SethBurns) & [Matt Fowler](https://github.com/mbenfowler) worked on this application. 
 
 ### Learning Goals:
 [//]: <> (What were the learning goals of this project? What tech did you work with?)
@@ -38,3 +38,15 @@ The learning goals of the project was to gain experience experience writing HTML
 
 ### Wins + Challenges:
 [//]: <> (What are 2-3 wins you have from this project? What were some challenges you faced - and how did you get over them?)
+
+#### Wins:
+- Easily satisfied basic project requirements, leaving us a lot of time to experiment with extra features/new concepts!
+- Project Management with Projects was very effective
+- Our front-loaded norming efforts really empowered us to complete most of our work async, saving our scheduled face-to-face time for setting daily goals and code reviews when new concepts were introduced.
+
+#### Challenges:
+- Modal work
+	- This required us to explore Promises/async functions to effectively handle waiting for user input within our event listeners.
+- Merge conflicts galore
+	- There were some very hairy merge conflicts we had to work through together as we were up to 3 developers now working quite intimately within the same 3 files.
+- Time-zone differences of team members
