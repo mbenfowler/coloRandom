@@ -84,7 +84,8 @@ function getNewHexes(mainDisplayedColors) {
         name: ''
     };
     var newColor;
-    for (i = 0; i < mainDisplayedColors.length; i++) {
+    for(var i = 0; i < mainDisplayedColors.length; i++) {
+
         var thisColorBoxLock = mainDisplayedColors[i].firstElementChild.firstElementChild;
         if (thisColorBoxLock.classList.contains('unlocked')) {
             newColor = getRandomHex();
@@ -124,6 +125,7 @@ async function savePalette() {
     getNewHexes(mainColorBoxes);
 }
 
+<<<<<<< HEAD
 function getPromiseFromEvent2(element, listenerName) {
     return new Promise(function (resolve) {
         async function listener(event) {
@@ -154,9 +156,23 @@ function isPaletteUnique(savedPalettes, currentPalette) {
             }
         }
         if (matches) {
+=======
+function isPaletteUnique(palettesList, singlePalette) {
+    for (var i = 0; i < palettesList.length; i++) {
+        if (areArraysEquivalent(palettesList[i], singlePalette)) {
+            return false;
+        } 
+    }
+    return true;   
+}    
+
+function areArraysEquivalent(palettesToCheck, currentPalette) {
+    for (var i = 0; i < palettesToCheck.length; i++) {
+        if (palettesToCheck[i] !== currentPalette[i]) {
+>>>>>>> main
             return false;
         }
-    }    
+    }
     return true;
 }
 
@@ -192,9 +208,8 @@ function addPaletteToSavedPalettes(palette) {
     savedPalettesSection.appendChild(newMiniContainer);    
     newMiniContainer.appendChild(newMiniColorsContainer);
 
-    for (i = 0; i < palette.hexes.length; i++) {
+    for (var i = 0; i < palette.hexes.length; i++) {
         newMiniColorsContainer.innerHTML += `<div class="mini-box", style="background-color: #${palette.hexes[i]}"></div>`;
-    }
 
     newMiniContainer.appendChild(newHoverContainer);
     newHoverContainer.innerHTML += `<img class="delete-button" src='./assets/delete.png'></img>`;
