@@ -3,13 +3,13 @@ var currentPalette = [];
 var shouldDelete = false;
 
 var main = document.querySelector('main');
-var savedContainer = document.querySelector('.save-container')
+var savedContainer = document.querySelector('.save-container');
 var buttonSection = document.querySelector('.button-area');
 var newPaletteButton = document.querySelector('button');
 var mainColorBoxes = document.querySelectorAll('.color-container');
 var lockButton = document.querySelector('.main-display');
-var savedPalettesSection = document.querySelector('.mini-palettes')
-var deleteModal = document.querySelector('.modal-window')
+var savedPalettesSection = document.querySelector('.mini-palettes');
+var deleteModal = document.querySelector('.modal-window');
 var paragraph = document.querySelector('p');
 
 window.addEventListener('load', function() {
@@ -23,45 +23,46 @@ lockButton.addEventListener('click', function(event) {
 });
 
 buttonSection.addEventListener('click', function(event) {
-    if(event.target.classList.contains('new-palette')) {
+    if (event.target.classList.contains('new-palette')) {
         getNewHexes(mainColorBoxes);
     }
 });
 
 buttonSection.addEventListener('click', function(event) {
-    if(event.target.classList.contains('save-palette')) {
+    if (event.target.classList.contains('save-palette')) {
         savePalette();
     }
 });
 
 savedPalettesSection.addEventListener('click', async function(event) {
-    if(event.target.classList.contains('delete-button')) {
-        modalClassToggler()
-        await getPromiseFromEvent(deleteModal, 'click')
-        if(shouldDelete) {
-            var eventTargetParent = event.target.parentNode
+    if (event.target.classList.contains('delete-button')) {
+        modalClassToggler();
+        await getPromiseFromEvent(deleteModal);
+        if (shouldDelete) {
+            var eventTargetParent = event.target.parentNode.parentNode;
             var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
             deletePalette(eventTargetParent, thisSavedPaletteIndex);
         } 
-        modalClassToggler()
+        modalClassToggler();
         shouldDelete = false;
-    } else if(event.target.classList.contains('mini-box')) {
+    } else if (event.target.classList.contains('mini-box')) {
         displayMainColours(getSavedPalette(event));
     }
 });
 
-function getPromiseFromEvent(element, listenerName) {
+function getPromiseFromEvent(event) {
     return new Promise(function (resolve) {
+        event.addEventListener('click', listener);
+
         function listener(event) {
-            if(event.target.classList.contains('modal-exit-button')) {
+            if (event.target.classList.contains('modal-exit-button')) {
                 shouldDelete = false;
-            } else if(event.target.nodeName === 'BUTTON') {
+                resolve(event);
+            } else if (event.target.classList.contains('delete-palette-button')) {
                 shouldDelete = true;
+                resolve(event);
             }
-            element.removeEventListener(listenerName, listener);
-            resolve(event);
         };
-        element.addEventListener(listenerName, listener);
     });
 }
 
@@ -76,8 +77,9 @@ function getNewHexes(mainDisplayedColors) {
     currentPalette = [];
     var newColor;
     for(var i = 0; i < mainDisplayedColors.length; i++) {
+
         var thisColorBoxLock = mainDisplayedColors[i].firstElementChild.firstElementChild;
-        if(thisColorBoxLock.classList.contains('unlocked')) {
+        if (thisColorBoxLock.classList.contains('unlocked')) {
             newColor = getRandomHex();
             mainDisplayedColors[i].firstElementChild.style.backgroundColor = `#${newColor}`;
             mainDisplayedColors[i].lastElementChild.innerText = `#${newColor}`;
@@ -106,7 +108,7 @@ function savePalette() {
         paragraph.classList.add('hidden');
     } 
     if (isPaletteUnique(savedPalettes, currentPalette)) {
-        savedPalettes.push(currentPalette)
+        savedPalettes.push(currentPalette);
         addPaletteToSavedPalettes(currentPalette);
     }
     getNewHexes(mainColorBoxes);
@@ -140,19 +142,29 @@ function deletePalette(savedPalette, savedPalettesIndex) {
 
 function addPaletteToSavedPalettes(palette) {
     var newMiniContainer = document.createElement('div');
-    newMiniContainer.classList.add('mini-container', 'hover');
-    savedPalettesSection.appendChild(newMiniContainer);
+    var newMiniColorsContainer = document.createElement('div');
+    var newHoverContainer = document.createElement('div');
+
+    newMiniContainer.classList.add('mini-container');
+    newHoverContainer.classList.add('hover');
+    newMiniColorsContainer.classList.add('hover', 'mini-colors');
+    
+    savedPalettesSection.appendChild(newMiniContainer);    
+    newMiniContainer.appendChild(newMiniColorsContainer);
+
     for (var i = 0; i < palette.length; i++) {
-        newMiniContainer.innerHTML += `<div class="mini-box", style="background-color: #${palette[i]}"></div>`
+        newMiniColorsContainer.innerHTML += `<div class="mini-box", style="background-color: #${palette[i]}"></div>`;
     }
-    newMiniContainer.innerHTML += `<img class="delete-button" src='./assets/delete.png'></img>`
+
+    newMiniContainer.appendChild(newHoverContainer);
+    newHoverContainer.innerHTML += `<img class="delete-button" src='./assets/delete.png'></img>`;
 }
 
 function getSavedPalette(event) {
     var color;
     var savedColors = [];
     if (event.target.classList.contains('mini-box')) {
-        for (var i = 0; i < event.target.parentNode.children.length - 1; i++) {
+        for (var i = 0; i < event.target.parentNode.children.length; i++) {
             color = event.target.parentNode.children[i].style.backgroundColor;
             savedColors[i] = rgbToHex(rgbToNumbers(color));
         }
@@ -171,8 +183,8 @@ function rgbToNumbers(rgbString) {
 
 function rgbToHex(rgbNumbers) {
     rgbToHexString = '';
-    for(var i = 0; i < rgbNumbers.length; i++) {
-        rgbToHexString += rgbNumbers[i].toString(16).padStart(2, 0)
+    for (var i = 0; i < rgbNumbers.length; i++) {
+        rgbToHexString += rgbNumbers[i].toString(16).padStart(2, 0);
     }
 
     return rgbToHexString.toUpperCase();
