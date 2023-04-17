@@ -68,19 +68,19 @@
         <div class="modal-window hidden" id="namePaletteModal">
             <span id="saveModalText">Would you like to name this palette? (Leave blank if not)</span>
             <input id="paletteNameInput" placeholder="Type name here..."></input>
-            <div class="hover button-area">
-                <div class="button-box-l delete-palette-button"></div>
-                <button id="savePaletteButton">Save</button>
-                <div class="button-box-r delete-palette-button"></div>
+            <div class="hover button-area" id="confirmSaveButtonArea">
+                <div class="button-box-l confirm-save-palette-button"></div>
+                <button class="confirm-save-palette-button" id="savePaletteButton">Save</button>
+                <div class="button-box-r confirm-save-palette-button"></div>
             </div>
         </div>
         <div class="modal-window hidden" id="deletePaletteModal">
             <img class="modal-exit-button hover" src='./assets/delete.png'></img>
             <span id="deleteModalText">Are you sure you want to delete this palette?</span>
             <div class="hover button-area">
-                <div class="button-box-l delete-palette-button"></div>
-                <button id="deletePaletteButton">Delete this palette</button>
-                <div class="button-box-r delete-palette-button"></div>
+                <div class="button-box-l confirm-delete-palette-button"></div>
+                <button class="confirm-delete-palette-button" id="deletePaletteButton">Delete this palette</button>
+                <div class="button-box-r confirm-delete-palette-button"></div>
             </div>
         </div>
         <script src="./main.js"></script>

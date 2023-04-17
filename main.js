@@ -12,7 +12,7 @@ var lockButton = document.querySelector('.main-display');
 var savedPalettesSection = document.querySelector('.mini-palettes');
 var saveModal = document.getElementById('namePaletteModal');
 var saveModalInput = document.querySelector('input');
-var saveModalButton = document.getElementById('savePaletteButton');
+var saveModalButtonArea = document.getElementById('confirmSaveButtonArea');
 var deleteModal = document.getElementById('deletePaletteModal');
 var paragraph = document.querySelector('p');
 
@@ -62,7 +62,7 @@ function getPromiseFromEvent(event) {
             if (event.target.classList.contains('modal-exit-button')) {
                 shouldDelete = false;
                 resolve(event);
-            } else if (event.target.classList.contains('delete-palette-button')) {
+            } else if (event.target.classList.contains('confirm-delete-palette-button')) {
                 shouldDelete = true;
                 resolve(event);
             }
@@ -116,7 +116,7 @@ async function savePalette() {
         paragraph.classList.add('hidden');
     } 
     if (isPaletteUnique(savedPalettes, currentPalette)) {
-        await getPromiseFromEvent2(saveModalButton, 'click');
+        await getPromiseFromEvent2(confirmSaveButtonArea, 'click');
         savedPalettes.push(currentPalette);
         addPaletteToSavedPalettes(currentPalette);
     }
@@ -127,12 +127,12 @@ async function savePalette() {
 function getPromiseFromEvent2(element, listenerName) {
     return new Promise(function (resolve) {
         function listener(event) {
-            if (event.target.nodeName === 'BUTTON') {
+            if (event.target.classList.contains('confirm-save-palette-button')) {
                 currentPalette.name = saveModalInput.value;
                 saveModalInput.value = ''
+                resolve(event);
             }
             element.removeEventListener(listenerName, listener);
-            resolve(event);
         };
         element.addEventListener(listenerName, listener);
     });
