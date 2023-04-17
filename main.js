@@ -51,7 +51,7 @@ savedPalettesSection.addEventListener('click', async function(event) {
         modalClassToggler([[deleteModal, 'hidden'], [main, 'block'], [savedContainer, 'block']]);
         shouldDelete = false;
     } else if (event.target.classList.contains('mini-box')) {
-        displayMainColours(getSavedPalette(event));
+        displayMainColours(getSavedPalette(event.target));
     }
 });
 
@@ -200,13 +200,11 @@ function addPaletteToSavedPalettes(palette) {
     newHoverContainer.innerHTML += `<img class="delete-button" src='./assets/delete.png'></img>`;
 }
 
-function getSavedPalette(event) {
-    if (event.target.classList.contains('mini-box')) {
-        var eventTargetParent = event.target.parentNode;
-        var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
-        var thisSavedPalette = savedPalettes[thisSavedPaletteIndex];
-        return thisSavedPalette;
-    }
+function getSavedPalette(eventTarget) {
+    var eventTargetParent = eventTarget.parentNode.parentNode;
+    var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
+    var thisSavedPalette = savedPalettes[thisSavedPaletteIndex];
+    return thisSavedPalette;
 }
 
 function rgbToNumbers(rgbString) {
@@ -229,14 +227,14 @@ function rgbToHex(rgbNumbers) {
 
 function displayMainColours(savedPalette) {
     currentPalette = savedPalette;
-    if (currentPalette.name) {
+    if (currentPalette.name.length) {
         paletteName.innerText = `palette name: "${currentPalette.name}"`;
         paletteName.classList.remove('hidden');
     } else {
         paletteName.classList.add('hidden');
     }
     
-    for (i = 0; i < currentPalette.hexes.length; i++) {
+    for (var i = 0; i < currentPalette.hexes.length; i++) {
         mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${currentPalette.hexes[i]}`;
         mainColorBoxes[i].lastElementChild.innerText = `#${currentPalette.hexes[i]}`;
     }
