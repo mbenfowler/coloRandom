@@ -51,7 +51,6 @@ savedPalettesSection.addEventListener('click', async function(event) {
 });
 
 function getPromiseFromEvent(event) {
-
     return new Promise(function (resolve) {
         event.addEventListener('click', listener);
 
