@@ -167,17 +167,6 @@ button {
     text-align: center;
 }
 
-<<<<<<< HEAD
-#deletePaletteButton {
-    border-radius: 15px;
-    padding: 10px;
-}
-
-#savePaletteButton {
-    border-radius: 15px;
-    padding: 10px;
-}
-
 #paletteNameInput {
     height: 50px;
     width: 250px;
