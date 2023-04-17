@@ -1,15 +1,20 @@
 var savedPalettes = [];
-var currentPalette = [];
+var currentPalette = {};
 var shouldDelete = false;
 
 var main = document.querySelector('main');
+var paletteName = document.getElementById('paletteName')
 var savedContainer = document.querySelector('.save-container');
 var buttonSection = document.querySelector('.button-area');
 var newPaletteButton = document.querySelector('button');
 var mainColorBoxes = document.querySelectorAll('.color-container');
 var lockButton = document.querySelector('.main-display');
 var savedPalettesSection = document.querySelector('.mini-palettes');
-var deleteModal = document.querySelector('.modal-window');
+var saveModal = document.getElementById('namePaletteModal');
+var saveModalText = document.getElementById('saveModalText');
+var saveModalInput = document.querySelector('input');
+var saveModalButtonArea = document.getElementById('confirmSaveButtonArea');
+var deleteModal = document.getElementById('deletePaletteModal');
 var paragraph = document.querySelector('p');
 
 window.addEventListener('load', function() {
@@ -36,29 +41,28 @@ buttonSection.addEventListener('click', function(event) {
 
 savedPalettesSection.addEventListener('click', async function(event) {
     if (event.target.classList.contains('delete-button')) {
-        modalClassToggler();
-        await getPromiseFromEvent(deleteModal);
+        modalClassToggler([[deleteModal, 'hidden'], [main, 'block'], [savedContainer, 'block']]);
+        await getPromiseFromConfirmDelete(deleteModal);
         if (shouldDelete) {
             var eventTargetParent = event.target.parentNode.parentNode;
             var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
             deletePalette(eventTargetParent, thisSavedPaletteIndex);
         } 
-        modalClassToggler();
+        modalClassToggler([[deleteModal, 'hidden'], [main, 'block'], [savedContainer, 'block']]);
         shouldDelete = false;
     } else if (event.target.classList.contains('mini-box')) {
-        displayMainColours(getSavedPalette(event));
+        displayMainColours(getSavedPalette(event.target));
     }
 });
 
-function getPromiseFromEvent(event) {
+function getPromiseFromConfirmDelete(event) {
     return new Promise(function (resolve) {
         event.addEventListener('click', listener);
-
         function listener(event) {
             if (event.target.classList.contains('modal-exit-button')) {
                 shouldDelete = false;
                 resolve(event);
-            } else if (event.target.classList.contains('delete-palette-button')) {
+            } else if (event.target.classList.contains('confirm-delete-palette-button')) {
                 shouldDelete = true;
                 resolve(event);
             }
@@ -66,15 +70,19 @@ function getPromiseFromEvent(event) {
     });
 }
 
-function modalClassToggler() {
-    deleteModal.classList.toggle('hidden');
-    main.classList.toggle('block');
-    savedContainer.classList.toggle('block');
+function modalClassToggler(elementsClasses) {
+    for (var i = 0; i < elementsClasses.length; i++) {
+        elementsClasses[i][0].classList.toggle(elementsClasses[i][1]);
+    }
 }
 
 function getNewHexes(mainDisplayedColors) {
-    var oldHexes = currentPalette;
-    currentPalette = [];
+    paletteName.classList.add('hidden');
+    var oldHexes = currentPalette.hexes;
+    currentPalette = {
+        hexes: [],
+        name: ''
+    };
     var newColor;
     for(var i = 0; i < mainDisplayedColors.length; i++) {
 
@@ -83,9 +91,9 @@ function getNewHexes(mainDisplayedColors) {
             newColor = getRandomHex();
             mainDisplayedColors[i].firstElementChild.style.backgroundColor = `#${newColor}`;
             mainDisplayedColors[i].lastElementChild.innerText = `#${newColor}`;
-            currentPalette.push(newColor);
+            currentPalette.hexes.push(newColor);
         } else { 
-            currentPalette.push(oldHexes[i]);
+            currentPalette.hexes.push(oldHexes[i]);
         }
     }
 }
@@ -103,38 +111,77 @@ function getRandomHex() {
     return (Math.floor(Math.random() * 16777216).toString(16).padStart(6, 0)).toUpperCase();
 }
 
-function savePalette() {
+async function savePalette() {
+    modalClassToggler([[saveModal, 'hidden'], [main, 'block'], [savedContainer, 'block']]);
     if (!savedPalettes.length) {
         paragraph.classList.add('hidden');
     } 
     if (isPaletteUnique(savedPalettes, currentPalette)) {
+        await getPromiseFromConfirmSave(confirmSaveButtonArea, 'click');
+        saveModalText.innerText = 'Would you like to name this palette? (Leave blank if not)';
         savedPalettes.push(currentPalette);
         addPaletteToSavedPalettes(currentPalette);
     }
+    modalClassToggler([[saveModal, 'hidden'], [main, 'block'], [savedContainer, 'block']]);
     getNewHexes(mainColorBoxes);
 }
 
-function isPaletteUnique(palettesList, singlePalette) {
-    for (var i = 0; i < palettesList.length; i++) {
-        if (areArraysEquivalent(palettesList[i], singlePalette)) {
-            return false;
-        } 
-    }
-    return true;   
-}    
+function getPromiseFromConfirmSave(element, listenerName) {
+    return new Promise(function (resolve) {
+        async function listener(event) {
+            if (event.target.classList.contains('confirm-save-palette-button')) {
+                currentPalette.name = saveModalInput.value;
+                saveModalInput.value = '';
+            }
+            if (currentPalette.name.length && !isPaletteNameUnique(currentPalette.name)) {
+                saveModalText.innerText = 'Name already taken! Name this palette something else?';
+                saveModalText.setAttribute('id', 'validation');
+                saveModalText.style.fontStyle = 'italic';
+                element.removeEventListener(listenerName, listener);
+                await getPromiseFromConfirmSave(confirmSaveButtonArea, 'click');
+                element.addEventListener(listenerName, listener);
+            }
+            resolve(event);
+            element.removeEventListener(listenerName, listener);
+        };
+        element.addEventListener(listenerName, listener);
+    });
+}
 
-function areArraysEquivalent(palettesToCheck, currentPalette) {
-    for (var i = 0; i < palettesToCheck.length; i++) {
-        if (palettesToCheck[i] !== currentPalette[i]) {
+function isPaletteUnique(savedPalettes, currentPalette) {
+    var isUnique = true;
+    for (var i = 0; i < savedPalettes.length; i++) {
+        if (arePalettesEquivalent(savedPalettes[i].hexes, currentPalette.hexes)) {
+            isUnique = false;
+        }
+    }
+    return isUnique;
+}
+
+function arePalettesEquivalent(savedPaletteToCheck, currentPalette) {
+    for (var i = 0; i < savedPaletteToCheck.length; i++) {
+        if (savedPaletteToCheck[i] !== currentPalette[i]) {
             return false;
         }
     }
     return true;
 }
 
+function isPaletteNameUnique(name) {
+    var matches = true;
+    for (var i = 0; i < savedPalettes.length; i++) {
+        if (savedPalettes[i].name === name) {
+            matches = false;
+            break;
+        }
+    }
+    return matches;
+}
+
 function deletePalette(savedPalette, savedPalettesIndex) {
     savedPalettes.splice(savedPalettesIndex, 1);
     savedPalette.remove();
+    paletteName.classList.add('hidden');
     if (!savedPalettes.length) {
         paragraph.classList.remove('hidden');
     }
@@ -152,24 +199,19 @@ function addPaletteToSavedPalettes(palette) {
     savedPalettesSection.appendChild(newMiniContainer);    
     newMiniContainer.appendChild(newMiniColorsContainer);
 
-    for (var i = 0; i < palette.length; i++) {
-        newMiniColorsContainer.innerHTML += `<div class="mini-box", style="background-color: #${palette[i]}"></div>`;
+    for (var i = 0; i < palette.hexes.length; i++) {
+        newMiniColorsContainer.innerHTML += `<div class="mini-box", style="background-color: #${palette.hexes[i]}"></div>`;
     }
 
     newMiniContainer.appendChild(newHoverContainer);
     newHoverContainer.innerHTML += `<img class="delete-button" src='./assets/delete.png'></img>`;
 }
 
-function getSavedPalette(event) {
-    var color;
-    var savedColors = [];
-    if (event.target.classList.contains('mini-box')) {
-        for (var i = 0; i < event.target.parentNode.children.length; i++) {
-            color = event.target.parentNode.children[i].style.backgroundColor;
-            savedColors[i] = rgbToHex(rgbToNumbers(color));
-        }
-    }
-    return savedColors;
+function getSavedPalette(eventTarget) {
+    var eventTargetParent = eventTarget.parentNode.parentNode;
+    var thisSavedPaletteIndex = Array.from(eventTargetParent.parentNode.children).indexOf(eventTargetParent);
+    var thisSavedPalette = savedPalettes[thisSavedPaletteIndex];
+    return thisSavedPalette;
 }
 
 function rgbToNumbers(rgbString) {
@@ -192,8 +234,15 @@ function rgbToHex(rgbNumbers) {
 
 function displayMainColours(savedPalette) {
     currentPalette = savedPalette;
-    for (var i = 0; i < savedPalette.length; i++) {
-        mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${savedPalette[i]}`;
-        mainColorBoxes[i].lastElementChild.innerText = `#${savedPalette[i]}`;
+    if (currentPalette.name.length) {
+        paletteName.innerText = `palette name: "${currentPalette.name}"`;
+        paletteName.classList.remove('hidden');
+    } else {
+        paletteName.classList.add('hidden');
+    }
+    
+    for (var i = 0; i < currentPalette.hexes.length; i++) {
+        mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${currentPalette.hexes[i]}`;
+        mainColorBoxes[i].lastElementChild.innerText = `#${currentPalette.hexes[i]}`;
     }
 }
