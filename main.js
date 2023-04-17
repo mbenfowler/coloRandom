@@ -137,7 +137,9 @@ function getPromiseFromConfirmSave(element, listenerName) {
                 saveModalText.innerText = 'Name already taken! Name this palette something else?';
                 saveModalText.setAttribute('id', 'validation');
                 saveModalText.style.fontStyle = 'italic';
+                element.removeEventListener(listenerName, listener);
                 await getPromiseFromConfirmSave(confirmSaveButtonArea, 'click');
+                element.addEventListener(listenerName, listener);
             }
             resolve(event);
             element.removeEventListener(listenerName, listener);
