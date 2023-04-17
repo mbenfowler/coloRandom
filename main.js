@@ -11,6 +11,7 @@ var mainColorBoxes = document.querySelectorAll('.color-container');
 var lockButton = document.querySelector('.main-display');
 var savedPalettesSection = document.querySelector('.mini-palettes');
 var saveModal = document.getElementById('namePaletteModal');
+var saveModalText = document.getElementById('saveModalText');
 var saveModalInput = document.querySelector('input');
 var saveModalButtonArea = document.getElementById('confirmSaveButtonArea');
 var deleteModal = document.getElementById('deletePaletteModal');
@@ -57,7 +58,6 @@ savedPalettesSection.addEventListener('click', async function(event) {
 function getPromiseFromEvent(event) {
     return new Promise(function (resolve) {
         event.addEventListener('click', listener);
-
         function listener(event) {
             if (event.target.classList.contains('modal-exit-button')) {
                 shouldDelete = false;
@@ -126,10 +126,16 @@ async function savePalette() {
 
 function getPromiseFromEvent2(element, listenerName) {
     return new Promise(function (resolve) {
-        function listener(event) {
+        async function listener(event) {
             if (event.target.classList.contains('confirm-save-palette-button')) {
                 currentPalette.name = saveModalInput.value;
                 saveModalInput.value = ''
+            }
+            if (currentPalette.name.length && !isPaletteNameUnique(currentPalette.name)) {
+                saveModalText.innerText = 'Name already taken! Name this palette something else?';
+                saveModalText.setAttribute('id', 'validation');
+                saveModalText.style.fontStyle = 'italic';
+                await getPromiseFromEvent2(confirmSaveButtonArea, 'click');
             }
             resolve(event);
             element.removeEventListener(listenerName, listener);
@@ -139,9 +145,9 @@ function getPromiseFromEvent2(element, listenerName) {
 }
 
 function isPaletteUnique(savedPalettes, currentPalette) {
-    for (i = 0; i < savedPalettes.length; i++) {
+    for (var i = 0; i < savedPalettes.length; i++) {
         var matches = true;
-        for (j = 0; j < savedPalettes[i].hexes.length; j++) {
+        for (var j = 0; j < savedPalettes[i].hexes.length; j++) {
             if (savedPalettes[i].hexes[j] !== currentPalette.hexes[j]) {
                 matches = false;
                 break;
@@ -152,6 +158,17 @@ function isPaletteUnique(savedPalettes, currentPalette) {
         }
     }    
     return true;
+}
+
+function isPaletteNameUnique(name) {
+    var matches = true;
+    for (var i = 0; i < savedPalettes.length; i++) {
+        if (savedPalettes[i].name === name) {
+            matches = false;
+            break;
+        }
+    }
+    return matches;
 }
 
 function deletePalette(savedPalette, savedPalettesIndex) {

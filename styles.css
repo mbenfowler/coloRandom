@@ -190,3 +190,17 @@ button {
     pointer-events: none;
     opacity: 0.3;
 }
+
+#validation {
+    animation: bounce 1s forwards;
+}
+
+@keyframes bounce {
+    0% { transform: translateY(0%) }
+    10% { transform: translateY(-15%) }
+    20% { transform: translateY(0%) }
+    25% { transform: translateY(-7%) }
+    27% { transform: translateY(0%) }
+    29% { transform: translateY(-3%) }
+    30% { transform: translateY(0) }
+}
