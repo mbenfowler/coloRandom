@@ -119,6 +119,8 @@ async function savePalette() {
     if (isPaletteUnique(savedPalettes, currentPalette)) {
         await getPromiseFromConfirmSave(confirmSaveButtonArea, 'click');
         saveModalText.innerText = 'Would you like to name this palette? (Leave blank if not)';
+        saveModalText.removeAttribute('id', 'validation');
+        saveModalText.style.fontStyle = "normal";
         savedPalettes.push(currentPalette);
         addPaletteToSavedPalettes(currentPalette);
     }
@@ -134,6 +136,8 @@ function getPromiseFromConfirmSave(element, listenerName) {
                 saveModalInput.value = '';
             }
             if (currentPalette.name.length && !isPaletteNameUnique(currentPalette.name)) {
+                saveModalText.removeAttribute('id', 'validation');
+                element.offsetWidth;
                 saveModalText.innerText = 'Name already taken! Name this palette something else?';
                 saveModalText.setAttribute('id', 'validation');
                 saveModalText.style.fontStyle = 'italic';
