@@ -130,8 +130,8 @@ function getPromiseFromEvent2(element, listenerName) {
             if (event.target.classList.contains('confirm-save-palette-button')) {
                 currentPalette.name = saveModalInput.value;
                 saveModalInput.value = ''
-                resolve(event);
             }
+            resolve(event);
             element.removeEventListener(listenerName, listener);
         };
         element.addEventListener(listenerName, listener);
@@ -157,6 +157,7 @@ function isPaletteUnique(savedPalettes, currentPalette) {
 function deletePalette(savedPalette, savedPalettesIndex) {
     savedPalettes.splice(savedPalettesIndex, 1);
     savedPalette.remove();
+    paletteName.classList.add('hidden');
     if (!savedPalettes.length) {
         paragraph.classList.remove('hidden');
     }
@@ -211,7 +212,7 @@ function rgbToHex(rgbNumbers) {
 
 function displayMainColours(savedPalette) {
     currentPalette = savedPalette;
-    if (savedPalette.name) {
+    if (currentPalette.name) {
         paletteName.innerText = `palette name: "${currentPalette.name}"`;
         paletteName.classList.remove('hidden');
     } else {
@@ -219,7 +220,7 @@ function displayMainColours(savedPalette) {
     }
     
     for (i = 0; i < currentPalette.hexes.length; i++) {
-        mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${savedPalette.hexes[i]}`;
-        mainColorBoxes[i].lastElementChild.innerText = `#${savedPalette.hexes[i]}`;
+        mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${currentPalette.hexes[i]}`;
+        mainColorBoxes[i].lastElementChild.innerText = `#${currentPalette.hexes[i]}`;
     }
 }
