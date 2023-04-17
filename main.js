@@ -118,6 +118,7 @@ async function savePalette() {
     } 
     if (isPaletteUnique(savedPalettes, currentPalette)) {
         await getPromiseFromConfirmSave(confirmSaveButtonArea, 'click');
+        saveModalText.innerText = 'Would you like to name this palette? (Leave blank if not)';
         savedPalettes.push(currentPalette);
         addPaletteToSavedPalettes(currentPalette);
     }
@@ -130,7 +131,7 @@ function getPromiseFromConfirmSave(element, listenerName) {
         async function listener(event) {
             if (event.target.classList.contains('confirm-save-palette-button')) {
                 currentPalette.name = saveModalInput.value;
-                saveModalInput.value = ''
+                saveModalInput.value = '';
             }
             if (currentPalette.name.length && !isPaletteNameUnique(currentPalette.name)) {
                 saveModalText.innerText = 'Name already taken! Name this palette something else?';
@@ -159,7 +160,6 @@ function arePalettesEquivalent(savedPaletteToCheck, currentPalette) {
     for (var i = 0; i < savedPaletteToCheck.length; i++) {
         if (savedPaletteToCheck[i] !== currentPalette[i]) {
             return false;
-            break;
         }
     }
     return true;
