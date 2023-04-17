@@ -125,7 +125,6 @@ async function savePalette() {
     getNewHexes(mainColorBoxes);
 }
 
-<<<<<<< HEAD
 function getPromiseFromEvent2(element, listenerName) {
     return new Promise(function (resolve) {
         async function listener(event) {
@@ -147,30 +146,20 @@ function getPromiseFromEvent2(element, listenerName) {
 }
 
 function isPaletteUnique(savedPalettes, currentPalette) {
+    var isUnique = true;
     for (var i = 0; i < savedPalettes.length; i++) {
-        var matches = true;
-        for (var j = 0; j < savedPalettes[i].hexes.length; j++) {
-            if (savedPalettes[i].hexes[j] !== currentPalette.hexes[j]) {
-                matches = false;
-                break;
-            }
+        if (arePalettesEquivalent(savedPalettes[i].hexes, currentPalette.hexes)) {
+            isUnique = false;
         }
-        if (matches) {
-=======
-function isPaletteUnique(palettesList, singlePalette) {
-    for (var i = 0; i < palettesList.length; i++) {
-        if (areArraysEquivalent(palettesList[i], singlePalette)) {
-            return false;
-        } 
     }
-    return true;   
-}    
+    return isUnique;
+}
 
-function areArraysEquivalent(palettesToCheck, currentPalette) {
-    for (var i = 0; i < palettesToCheck.length; i++) {
-        if (palettesToCheck[i] !== currentPalette[i]) {
->>>>>>> main
+function arePalettesEquivalent(savedPaletteToCheck, currentPalette) {
+    for (var i = 0; i < savedPaletteToCheck.length; i++) {
+        if (savedPaletteToCheck[i] !== currentPalette[i]) {
             return false;
+            break;
         }
     }
     return true;
@@ -210,6 +199,7 @@ function addPaletteToSavedPalettes(palette) {
 
     for (var i = 0; i < palette.hexes.length; i++) {
         newMiniColorsContainer.innerHTML += `<div class="mini-box", style="background-color: #${palette.hexes[i]}"></div>`;
+    }
 
     newMiniContainer.appendChild(newHoverContainer);
     newHoverContainer.innerHTML += `<img class="delete-button" src='./assets/delete.png'></img>`;
